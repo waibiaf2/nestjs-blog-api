@@ -13,7 +13,7 @@ import { UsersService } from './providers/users.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { GetUserParamDto } from './dtos/get-user-param.dto';
 import { PatchUserDto } from './dtos/patch-user.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('users')
 @ApiTags('Users')
@@ -21,6 +21,28 @@ export class UsersController {
   constructor(private userService: UsersService) {}
 
   @Get()
+  @ApiOperation({
+    summary: 'Fetches a list of users on the application',
+    description: 'Get all users with pagination',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns a list of users',
+  })
+  @ApiQuery({
+    name: 'limit',
+    type: 'number',
+    required: false,
+    description: 'The number of entries returned per query',
+    example: 10,
+  })
+  @ApiQuery({
+    name: 'page',
+    type: 'number',
+    required: false,
+    description: 'The page number to return',
+    example: 1,
+  })
   public getUsers(
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
@@ -34,10 +56,8 @@ export class UsersController {
   }
 
   @Get(':id/:optional')
-  public getUserWithOptionalParam(
-    @Param('id', ParseIntPipe) id: number | undefined,
-    @Param('optional', ParseIntPipe) optional: string,
-  ) {
+  public getUserWithOptionalParam(@Param() getUserParamsDto: GetUserParamDto) {
+    const { id, optional } = getUserParamsDto;
     console.log(id);
     console.log(optional);
     return `User with id: ${id} and ${optional}`;

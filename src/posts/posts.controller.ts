@@ -1,5 +1,5 @@
 import { Controller, Get, Param } from '@nestjs/common';
-import { PostsService } from './providers/posts.service';
+import { IPost, PostsService } from './providers/posts.service';
 import { GetPostsParamsDto } from './dtos/get-posts-params.dto';
 
 @Controller('posts')
@@ -7,10 +7,10 @@ export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Get()
-  public findAll() {
+  public findAll(): IPost[] {
     return this.postsService.findAll();
   }
-  
+
   @Get(':userId')
   public findAllUserPosts(@Param('userId') userId: string) {
     return this.postsService.findAllByUserId(userId);

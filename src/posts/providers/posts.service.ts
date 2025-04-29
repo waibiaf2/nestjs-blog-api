@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from '../../users/providers/users.service';
 
-interface IPost {
+export interface IPost {
   id: number;
   title: string;
   content: string;

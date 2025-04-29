@@ -1,0 +1,33 @@
+###
+GET localhost:3000/users
+
+###
+GET localhost:3000/users/10
+
+###
+GET localhost:3000/users/10/james
+
+###
+POST localhost:3000/users
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "johndoe@email.com",
+  "password": "gLORRIAVIOS#_2"
+}
+
+
+###
+PATCH localhost:3000/users
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "johndoe@email.com"
+}
+
+
+

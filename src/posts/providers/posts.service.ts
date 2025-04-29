@@ -18,6 +18,11 @@ export class PostsService {
   findAll() {
     return this.posts;
   }
+  
+  findAllByUserId(userId: string) {
+    console.log(userId);
+    return this.posts;
+  }
 
   findOneById(id: number) {
     return this.posts.find((post) => post.id === id);

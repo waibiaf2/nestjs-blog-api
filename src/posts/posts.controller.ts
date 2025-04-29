@@ -10,6 +10,11 @@ export class PostsController {
   public findAll() {
     return this.postsService.findAll();
   }
+  
+  @Get(':userId')
+  public findAllUserPosts(@Param('userId') userId: string) {
+    return this.postsService.findAllByUserId(userId);
+  }
 
   @Get(':id')
   public findOneById(@Param() getPostsPrams: GetPostsParamsDto) {

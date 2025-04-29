@@ -35,6 +35,13 @@ Content-Type: application/json
 ###
 GET localhost:3000/posts
 
+####
+GET localhost:3000/posts/1
+
+
+
 ###
 GET localhost:3000/posts/2
+
+
 

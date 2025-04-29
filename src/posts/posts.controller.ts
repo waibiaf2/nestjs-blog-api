@@ -1,6 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { PostsService } from './providers/posts.service';
-import { GetPostsParamsDto } from './get-posts-params.dto';
+import { GetPostsParamsDto } from './dtos/get-posts-params.dto';
 
 @Controller('posts')
 export class PostsController {

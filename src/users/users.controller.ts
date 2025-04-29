@@ -9,7 +9,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { UsersService } from './providers/users.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { GetUserParamDto } from './dtos/get-user-param.dto';
 import { PatchUserDto } from './dtos/patch-user.dto';
@@ -23,12 +23,12 @@ export class UsersController {
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
   ) {
-    return this.userService.getAllUsers(limit, page);
+    return this.userService.findAll(limit, page);
   }
 
   @Get(':id')
   public getUser(@Param() getUserParamDto: GetUserParamDto) {
-    return `User with id: ${getUserParamDto.id}`;
+    return this.userService.findOneById(getUserParamDto.id);
   }
 
   @Get(':id/:optional')

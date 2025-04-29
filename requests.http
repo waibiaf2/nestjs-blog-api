@@ -2,7 +2,7 @@
 GET localhost:3000/users
 
 ###
-GET localhost:3000/users/10
+GET localhost:3000/users/5
 
 ###
 GET localhost:3000/users/10/james
@@ -29,5 +29,12 @@ Content-Type: application/json
   "email": "johndoe@email.com"
 }
 
+########################################
+# Post Requests
+########################################
+###
+GET localhost:3000/posts
 
+###
+GET localhost:3000/posts/2
 

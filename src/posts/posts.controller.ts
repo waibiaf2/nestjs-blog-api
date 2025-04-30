@@ -1,7 +1,8 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { IPost, PostsService } from './providers/posts.service';
 import { GetPostsParamsDto } from './dtos/get-posts-params.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { CreatePostDto } from './dtos/create-post.dto';
 
 @Controller('posts')
 @ApiTags('Posts')
@@ -21,5 +22,10 @@ export class PostsController {
   @Get(':id')
   public findOneById(@Param() getPostsPrams: GetPostsParamsDto) {
     return this.postsService.findOneById(getPostsPrams.id);
+  }
+
+  @Post()
+  public createPost(@Body() createPostDto: CreatePostDto) {
+    return this.postsService.createPost(createPostDto);
   }
 }

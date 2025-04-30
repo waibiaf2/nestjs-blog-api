@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from '../../users/providers/users.service';
+import { CreatePostDto } from '../dtos/create-post.dto';
 
 export interface IPost {
   id: number;
   title: string;
   content: string;
+
   user: {
     id: number;
     firstName: string;
@@ -16,7 +18,7 @@ export interface IPost {
 @Injectable()
 export class PostsService {
   posts: IPost[] = [];
-  
+
   constructor(private readonly userService: UsersService) {}
 
   findAll() {
@@ -47,5 +49,16 @@ export class PostsService {
 
   findOneById(id: number) {
     return this.posts.find((post) => post.id === id);
+  }
+
+  createPost(createPostDto: CreatePostDto) {
+    const user = this.userService.findOneById(2);
+    const postId = this.posts.length + 1;
+    const post = {
+      id: postId,
+      ...createPostDto,
+      user,
+    };
+    console.log(createPostDto);
   }
 }

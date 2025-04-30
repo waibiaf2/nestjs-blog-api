@@ -16,6 +16,7 @@ export interface IPost {
 @Injectable()
 export class PostsService {
   posts: IPost[] = [];
+  
   constructor(private readonly userService: UsersService) {}
 
   findAll() {

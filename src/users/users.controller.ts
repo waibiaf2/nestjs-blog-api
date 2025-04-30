@@ -55,7 +55,7 @@ export class UsersController {
     return this.userService.findOneById(getUserParamDto.id);
   }
 
-  @Get(':id/:optional')
+  @Get(':id/{:optional}')
   public getUserWithOptionalParam(@Param() getUserParamsDto: GetUserParamDto) {
     const { id, optional } = getUserParamsDto;
     console.log(id);

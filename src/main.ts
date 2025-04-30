@@ -24,6 +24,7 @@ async function bootstrap() {
     .setTermsOfService('http://localhost:3000/api/terms')
     .setLicense('MIT Licence', 'https://opensource.org/licenses/MIT')
     .addServer('http://localhost:3000')
+    .addServer('http://localhost:3000/api')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);

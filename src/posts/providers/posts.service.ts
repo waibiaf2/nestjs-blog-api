@@ -51,14 +51,7 @@ export class PostsService {
     return this.posts.find((post) => post.id === id);
   }
 
-  createPost(createPostDto: CreatePostDto) {
-    const user = this.userService.findOneById(2);
-    const postId = this.posts.length + 1;
-    const post = {
-      id: postId,
-      ...createPostDto,
-      user,
-    };
-    console.log(createPostDto);
+  createPost(createPostDto: CreatePostDto): CreatePostDto {
+    return createPostDto;
   }
 }

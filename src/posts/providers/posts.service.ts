@@ -17,7 +17,45 @@ export interface IPost {
 
 @Injectable()
 export class PostsService {
-  posts: IPost[] = [];
+  posts: IPost[] = [
+    {
+      id: 1,
+      title: 'What is new in NestJs',
+      postType: PostType.POST,
+      content: 'Post Content, and this cool int e h processsss',
+      slug: 'what-is-new-in-nestjs',
+      status: PostStatus.DRAFT,
+      publishedOn: new Date('2023-10-01T00:00:00.000Z'),
+      schema:
+        '{"version":1,"blocks":[{"type":"header","data":{"text":"Article Header","level":1}},{"type":"paragraph","data":{"text":"Article content paragraph"}}]}',
+      tags: ['nestjs', 'typescript'],
+      metaOptions: [
+        {
+          key: 'sideBarEnabled',
+          value: true,
+        },
+      ],
+    },
+    {
+      id: 2,
+      title: 'How to integrate Swagger in nestjs',
+      postType: PostType.POST,
+      content:
+        'Various configuration and patterns for setting swagger documentation in nestjs',
+      slug: 'what-is-new-in-nestjs',
+      status: PostStatus.DRAFT,
+      publishedOn: new Date('2023-10-01T00:00:00.000Z'),
+      schema:
+        '{"version":1,"blocks":[{"type":"header","data":{"text":"Article Header","level":1}},{"type":"paragraph","data":{"text":"Article content paragraph"}}]}',
+      tags: ['nestjs', 'typescript', 'swagger'],
+      metaOptions: [
+        {
+          key: 'sideBarEnabled',
+          value: true,
+        },
+      ],
+    },
+  ];
 
   constructor(private readonly userService: UsersService) {}
 

@@ -68,7 +68,7 @@ export class UsersController {
 
   @Post()
   public createUser(@Body() createUserDto: CreateUserDto) {
-    return `User created the details are: ${JSON.stringify(createUserDto)}`;
+    return this.userService.createUser(createUserDto);
   }
 
   @Patch()

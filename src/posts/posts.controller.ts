@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { IPost, PostsService } from './providers/posts.service';
 import { GetPostsParamsDto } from './dtos/get-posts-params.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreatePostDto } from './dtos/create-post.dto';
 
 @Controller('posts')
@@ -14,8 +14,9 @@ export class PostsController {
     return this.postsService.findAll();
   }
 
-  @Get(':userId')
-  public findAllUserPosts(@Param('userId') userId: string) {
+  @Get('/users/:userId')
+  public findAllUserPosts(@Param('userId') userId: string): IPost {
+    console.log(this.postsService.findAllByUserId(userId));
     return this.postsService.findAllByUserId(userId);
   }
 
@@ -24,6 +25,14 @@ export class PostsController {
     return this.postsService.findOneById(getPostsPrams.id);
   }
 
+  @ApiOperation({
+    summary: 'Create a new blog post',
+    description: 'Create a new post with the given data',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'You get a 201 response is your post is create successfully.',
+  })
   @Post()
   public createPost(@Body() createPostDto: CreatePostDto) {
     return this.postsService.createPost(createPostDto);

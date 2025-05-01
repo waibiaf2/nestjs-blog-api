@@ -3,7 +3,7 @@ import {
   IsEnum,
   IsISO8601,
   IsJSON,
-  IsNotEmpty,
+  IsNotEmpty, IsNumber,
   IsOptional,
   IsString,
   IsUrl,

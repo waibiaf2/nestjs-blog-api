@@ -1,18 +1,22 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UsersService } from '../../users/providers/users.service';
 import { CreatePostDto } from '../dtos/create-post.dto';
+import { PostType } from '../enums/post-type.enum';
+import { PostStatus } from '../enums/post-status.enum';
+import { CreatePostsMetaOptionsDto } from '../dtos/create-posts-meta-options.dto';
+import { PatchPostDto } from '../dtos/patch-posts.dto';
 
 export interface IPost {
-  id: number;
+  id?: number;
   title: string;
+  postType: PostType;
   content: string;
-
-  user: {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-  };
+  slug: string;
+  status: PostStatus;
+  publishedOn: Date;
+  schema: string;
+  tags: string[];
+  metaOptions: CreatePostsMetaOptionsDto[];
 }
 
 @Injectable()
@@ -79,5 +83,9 @@ export class PostsService {
 
   createPost(createPostDto: CreatePostDto): CreatePostDto {
     return createPostDto;
+  }
+
+  updatePost(patchPostDto: PatchPostDto) {
+    console.log(patchPostDto);
   }
 }

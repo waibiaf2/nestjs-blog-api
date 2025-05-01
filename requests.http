@@ -33,7 +33,10 @@ Content-Type: application/json
 GET localhost:3000/posts
 
 ####
-GET localhost:3000/posts/1
+GET localhost:3000/posts/2
+
+###
+GET http://localhost:3000/users/2
 
 
 
@@ -61,5 +64,30 @@ Content-Type: application/json
     ]
 }
 
+
+###
+PATCH localhost:3000/posts/1
+Content-Type: application/json
+
+{
+    "id": 1,
+    "title": "What is new in NestJs, and Api Development",
+    "postType": "post",
+    "content": "Post Content, and this cool int e h processsss",
+    "slug": "what-is-new-in-nestjs",
+    "status": "draft",
+    "publishedOn": "2023-10-01T00:00:00.000Z",
+    "schema": "{\"version\":1,\"blocks\":[{\"type\":\"header\",\"data\":{\"text\":\"Article Header\",\"level\":1}},{\"type\":\"paragraph\",\"data\":{\"text\":\"Article content paragraph\"}}]}",
+    "tags": [
+        "nestjs",
+        "typescript"
+    ],
+    "metaOptions": [
+        {
+            "key": "sideBarEnabled",
+            "value": "true"
+        }
+    ]
+}
 
 

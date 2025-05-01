@@ -5,21 +5,20 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { PatchPostDto } from './dtos/patch-posts.dto';
 
-
 @Controller('posts')
 @ApiTags('Posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   @Get()
-  public findAll(): IPost[] {
+  public findAll() {
     return this.postsService.findAll();
   }
 
   @Get('/users/:userId')
-  public findAllUserPosts(@Param('userId') userId: string): IPost {
+  public findAllUserPosts(@Param('userId') userId: string) {
     console.log(this.postsService.findAllByUserId(userId));
-    return this.postsService.findAllByUserId(userId);
+    return 'These are my posts';
   }
 
   @Get(':id')

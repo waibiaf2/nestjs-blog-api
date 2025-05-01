@@ -1,9 +1,9 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { UsersService } from '../../users/providers/users.service';
 import { CreatePostDto } from '../dtos/create-post.dto';
 import { PostType } from '../enums/post-type.enum';
 import { PostStatus } from '../enums/post-status.enum';
-import { CreatePostsMetaOptionsDto } from '../dtos/create-posts-meta-options.dto';
+import { CreateMetaOptionsDto } from '../../meta-options/dtos/create-meta-options.dto';
 import { PatchPostDto } from '../dtos/patch-posts.dto';
 
 export interface IPost {
@@ -16,12 +16,12 @@ export interface IPost {
   publishedOn: Date;
   schema: string;
   tags: string[];
-  metaOptions: CreatePostsMetaOptionsDto[];
+  metaOptions: CreateMetaOptionsDto[];
 }
 
 @Injectable()
 export class PostsService {
-  posts: IPost[] = [
+  /*posts: IPost[] = [
     {
       id: 1,
       title: 'What is new in NestJs',
@@ -33,12 +33,12 @@ export class PostsService {
       schema:
         '{"version":1,"blocks":[{"type":"header","data":{"text":"Article Header","level":1}},{"type":"paragraph","data":{"text":"Article content paragraph"}}]}',
       tags: ['nestjs', 'typescript'],
-      metaOptions: [
+      /!*metaOptions: [
         {
           key: 'sideBarEnabled',
           value: true,
         },
-      ],
+      ],*!/
     },
     {
       id: 2,
@@ -52,33 +52,34 @@ export class PostsService {
       schema:
         '{"version":1,"blocks":[{"type":"header","data":{"text":"Article Header","level":1}},{"type":"paragraph","data":{"text":"Article content paragraph"}}]}',
       tags: ['nestjs', 'typescript', 'swagger'],
-      metaOptions: [
+      /!*metaOptions: [
         {
           key: 'sideBarEnabled',
           value: true,
         },
-      ],
+      ],*!/
     },
   ];
-
+*/
   constructor(private readonly userService: UsersService) {}
 
   findAll() {
     //const user = this.userService.findOneById(2);
-    return this.posts;
+    return `These are the posts`;
   }
 
-  findAllByUserId(userId: string): IPost {
+  findAllByUserId(userId: string) {
     console.log(userId);
-    return this.posts[0];
+    //return this.posts[0];
   }
 
-  findOneById(id: number): IPost {
-    const post = this.posts.find((post) => post.id === id);
+  findOneById(id: number) {
+    /*const post = this.posts.find((post) => post.id === id);
     if (!post) {
       throw new NotFoundException(`Post with id ${id} not found`);
     }
-    return post;
+    return post;*/
+    console.log(id);
   }
 
   createPost(createPostDto: CreatePostDto): CreatePostDto {

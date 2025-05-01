@@ -3,11 +3,12 @@ import {
   IsEnum,
   IsISO8601,
   IsJSON,
-  IsNotEmpty, IsNumber,
+  IsNotEmpty,
   IsOptional,
   IsString,
   IsUrl,
   Matches,
+  MaxLength,
   MinLength,
   ValidateNested,
 } from 'class-validator';
@@ -15,7 +16,7 @@ import { Type } from 'class-transformer';
 
 import { PostType } from '../enums/post-type.enum';
 import { PostStatus } from '../enums/post-status.enum';
-import { CreatePostsMetaOptionsDto } from './create-posts-meta-options.dto';
+import { CreateMetaOptionsDto } from '../../meta-options/dtos/create-meta-options.dto';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreatePostDto {
@@ -25,6 +26,7 @@ export class CreatePostDto {
   })
   @IsString()
   @MinLength(5)
+  @MaxLength(512)
   title: string;
 
   @ApiProperty({
@@ -41,6 +43,8 @@ export class CreatePostDto {
   })
   @IsString()
   @IsNotEmpty()
+  @MinLength(5)
+  @MaxLength(255)
   @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
     message:
       'Slug should all small letters and uses "-" and without spaces. For example: my-url,',
@@ -79,6 +83,7 @@ export class CreatePostDto {
   })
   @IsUrl()
   @IsOptional()
+  @MaxLength(1024)
   featuredImageUrl?: string;
 
   @ApiPropertyOptional({
@@ -122,6 +127,6 @@ export class CreatePostDto {
   @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => CreatePostsMetaOptionsDto)
-  metaOptions?: CreatePostsMetaOptionsDto[];
+  @Type(() => CreateMetaOptionsDto)
+  metaOptions?: CreateMetaOptionsDto[];
 }

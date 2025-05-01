@@ -297,7 +297,7 @@
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>metaOptions:         <code><a href="../classes/CreatePostsMetaOptionsDto.html" target="_self" >CreatePostsMetaOptionsDto[]</a></code>
+                                        <code>metaOptions:     <code>CreateMetaOptionsDto[]</code>
 </code>
                                     </td>
                                 </tr>
@@ -305,7 +305,7 @@
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>        <code><a href="../classes/CreatePostsMetaOptionsDto.html" target="_self" >CreatePostsMetaOptionsDto[]</a></code>
+                                            <i>Type : </i>    <code>CreateMetaOptionsDto[]</code>
 
                                         </td>
                                     </tr>
@@ -552,12 +552,12 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable, NotFoundException } from &#x27;@nestjs/common&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Injectable } from &#x27;@nestjs/common&#x27;;
 import { UsersService } from &#x27;../../users/providers/users.service&#x27;;
 import { CreatePostDto } from &#x27;../dtos/create-post.dto&#x27;;
 import { PostType } from &#x27;../enums/post-type.enum&#x27;;
 import { PostStatus } from &#x27;../enums/post-status.enum&#x27;;
-import { CreatePostsMetaOptionsDto } from &#x27;../dtos/create-posts-meta-options.dto&#x27;;
+import { CreateMetaOptionsDto } from &#x27;../../meta-options/dtos/create-meta-options.dto&#x27;;
 import { PatchPostDto } from &#x27;../dtos/patch-posts.dto&#x27;;
 
 export interface IPost {
@@ -570,12 +570,12 @@ export interface IPost {
   publishedOn: Date;
   schema: string;
   tags: string[];
-  metaOptions: CreatePostsMetaOptionsDto[];
+  metaOptions: CreateMetaOptionsDto[];
 }
 
 @Injectable()
 export class PostsService {
-  posts: IPost[] &#x3D; [
+  /*posts: IPost[] &#x3D; [
     {
       id: 1,
       title: &#x27;What is new in NestJs&#x27;,
@@ -587,12 +587,12 @@ export class PostsService {
       schema:
         &#x27;{&quot;version&quot;:1,&quot;blocks&quot;:[{&quot;type&quot;:&quot;header&quot;,&quot;data&quot;:{&quot;text&quot;:&quot;Article Header&quot;,&quot;level&quot;:1}},{&quot;type&quot;:&quot;paragraph&quot;,&quot;data&quot;:{&quot;text&quot;:&quot;Article content paragraph&quot;}}]}&#x27;,
       tags: [&#x27;nestjs&#x27;, &#x27;typescript&#x27;],
-      metaOptions: [
+      /!*metaOptions: [
         {
           key: &#x27;sideBarEnabled&#x27;,
           value: true,
         },
-      ],
+      ],*!/
     },
     {
       id: 2,
@@ -606,33 +606,34 @@ export class PostsService {
       schema:
         &#x27;{&quot;version&quot;:1,&quot;blocks&quot;:[{&quot;type&quot;:&quot;header&quot;,&quot;data&quot;:{&quot;text&quot;:&quot;Article Header&quot;,&quot;level&quot;:1}},{&quot;type&quot;:&quot;paragraph&quot;,&quot;data&quot;:{&quot;text&quot;:&quot;Article content paragraph&quot;}}]}&#x27;,
       tags: [&#x27;nestjs&#x27;, &#x27;typescript&#x27;, &#x27;swagger&#x27;],
-      metaOptions: [
+      /!*metaOptions: [
         {
           key: &#x27;sideBarEnabled&#x27;,
           value: true,
         },
-      ],
+      ],*!/
     },
   ];
-
+*/
   constructor(private readonly userService: UsersService) {}
 
   findAll() {
     //const user &#x3D; this.userService.findOneById(2);
-    return this.posts;
+    return &#x60;These are the posts&#x60;;
   }
 
-  findAllByUserId(userId: string): IPost {
+  findAllByUserId(userId: string) {
     console.log(userId);
-    return this.posts[0];
+    //return this.posts[0];
   }
 
-  findOneById(id: number): IPost {
-    const post &#x3D; this.posts.find((post) &#x3D;&gt; post.id &#x3D;&#x3D;&#x3D; id);
+  findOneById(id: number) {
+    /*const post &#x3D; this.posts.find((post) &#x3D;&gt; post.id &#x3D;&#x3D;&#x3D; id);
     if (!post) {
       throw new NotFoundException(&#x60;Post with id ${id} not found&#x60;);
     }
-    return post;
+    return post;*/
+    console.log(id);
   }
 
   createPost(createPostDto: CreatePostDto): CreatePostDto {

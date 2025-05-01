@@ -282,6 +282,9 @@
     <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { forwardRef, Inject, Injectable } from &#x27;@nestjs/common&#x27;;
 import { AuthService } from &#x27;../../auth/providers/auth.service&#x27;;
+import { InjectRepository } from &#x27;@nestjs/typeorm&#x27;;
+import { UserEntity } from &#x27;../user.entity&#x27;;
+import { Repository } from &#x27;typeorm&#x27;;
 
 /**
  * Interface to define user object
@@ -307,9 +310,15 @@ export class UsersService {
 
   /**
    * Constructor to inject Dependencies
+   * @param userRepository
    * @param authService - AuthService instance
    */
   constructor(
+    /**
+     * Injecting UserEntity repository to perform database operations
+     */
+    @InjectRepository(UserEntity)
+    private userRepository: Repository&lt;UserEntity&gt;,
     @Inject(forwardRef(() &#x3D;&gt; AuthService))
     private readonly authService: AuthService,
   ) {}

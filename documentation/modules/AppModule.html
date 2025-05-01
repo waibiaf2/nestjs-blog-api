@@ -284,6 +284,9 @@ import { PostsModule } from &#x27;./posts/posts.module&#x27;;
 import { AuthModule } from &#x27;./auth/auth.module&#x27;;
 import { TypeOrmModule } from &#x27;@nestjs/typeorm&#x27;;
 import { User } from &#x27;./users/user.entity&#x27;;
+import { Post } from &#x27;./posts/post.entity&#x27;;
+import { TagsModule } from &#x27;./tags/tags.module&#x27;;
+import { MetaOptionsModule } from &#x27;./meta-options/meta-options.module&#x27;;
 
 @Module({
   imports: [
@@ -311,10 +314,12 @@ import { User } from &#x27;./users/user.entity&#x27;;
         username: &#x27;postgres&#x27;,
         password: &#x27;andy_123&#x27;,
         database: &#x27;nestjs-blog&#x27;,
-        entities: [User],
+        entities: [User, Post],
         synchronize: true,
       }),
     }),
+    TagsModule,
+    MetaOptionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

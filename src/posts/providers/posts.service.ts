@@ -60,33 +60,21 @@ export class PostsService {
   constructor(private readonly userService: UsersService) {}
 
   findAll() {
-    const user = this.userService.findOneById(2);
-
-    this.posts = [
-      {
-        id: 1,
-        title: 'Post 1',
-        content: 'Content of post 1',
-        user,
-      },
-      {
-        id: 2,
-        title: 'Post 2',
-        content: 'Content of post 2',
-        user,
-      },
-    ];
-
+    //const user = this.userService.findOneById(2);
     return this.posts;
   }
 
-  findAllByUserId(userId: string) {
+  findAllByUserId(userId: string): IPost {
     console.log(userId);
-    return this.posts;
+    return this.posts[0];
   }
 
-  findOneById(id: number) {
-    return this.posts.find((post) => post.id === id);
+  findOneById(id: number): IPost {
+    const post = this.posts.find((post) => post.id === id);
+    if (!post) {
+      throw new NotFoundException(`Post with id ${id} not found`);
+    }
+    return post;
   }
 
   createPost(createPostDto: CreatePostDto): CreatePostDto {

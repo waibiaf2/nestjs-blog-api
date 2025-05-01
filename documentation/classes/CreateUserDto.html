@@ -143,9 +143,12 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                 <a href="#email" >email</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
@@ -155,10 +158,12 @@
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
+                                    <span class="modifier"></span>
                                     <span class="modifier">Optional</span>
                                 <a href="#lastName" >lastName</a>
                             </li>
                             <li>
+                                    <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
                                     <span class="modifier"></span>
@@ -193,6 +198,8 @@
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
+                            <span class="modifier"></span>
+                            <span class="modifier"></span>
                         <span ><b>email</b></span>
                         <a href="#email"><span class="icon ion-ios-link"></span></a>
                     </span>
@@ -209,13 +216,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsEmail()<br />@IsNotEmpty()<br />@IsString()<br />
+                            @IsEmail()<br />@IsNotEmpty()<br />@IsString()<br />@MinLength(3)<br />@MaxLength(96)<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/users/dtos/create-user.dto.ts:25</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/users/dtos/create-user.dto.ts:30</a></div>
                         </td>
                     </tr>
 
@@ -228,6 +235,7 @@
                 <td class="col-md-4">
                     <a name="firstName"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
@@ -247,13 +255,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@IsNotEmpty()<br />@MinLength(3)<br />
+                            @IsString()<br />@IsNotEmpty()<br />@MinLength(3)<br />@MaxLength(96)<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/users/dtos/create-user.dto.ts:15</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/users/dtos/create-user.dto.ts:17</a></div>
                         </td>
                     </tr>
 
@@ -266,6 +274,7 @@
                 <td class="col-md-4">
                     <a name="lastName"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
@@ -286,13 +295,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@IsOptional()<br />@MinLength(3)<br />
+                            @IsString()<br />@IsOptional()<br />@MinLength(3)<br />@MaxLength(96)<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/users/dtos/create-user.dto.ts:20</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/users/dtos/create-user.dto.ts:23</a></div>
                         </td>
                     </tr>
 
@@ -305,6 +314,7 @@
                 <td class="col-md-4">
                     <a name="password"></a>
                     <span class="name">
+                            <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
                             <span class="modifier"></span>
@@ -325,13 +335,13 @@
                         <b>Decorators : </b>
                         <br />
                         <code>
-                            @IsString()<br />@IsStrongPassword()<br />@MinLength(8)<br />@Matches(/^(?&#x3D;.*[A-Z])(?&#x3D;.*[0-9])(?&#x3D;.*[!@#$%^&amp;*()_+\-&#x3D;\[\]{};&#x27;:&quot;\\|,.&lt;&gt;\/?])(?&#x3D;.{8,})/, {message: &#x27;Password must contain at least one uppercase letter, one number, and one special character&#x27;})<br />
+                            @IsString()<br />@IsStrongPassword()<br />@MinLength(8)<br />@MaxLength(96)<br />@Matches(/^(?&#x3D;.*[A-Z])(?&#x3D;.*[0-9])(?&#x3D;.*[!@#$%^&amp;*()_+\-&#x3D;\[\]{};&#x27;:&quot;\\|,.&lt;&gt;\/?])(?&#x3D;.{8,})/, {message: &#x27;Password must contain at least one uppercase letter, one number, and one special character&#x27;})<br />
                         </code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/users/dtos/create-user.dto.ts:37</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/users/dtos/create-user.dto.ts:43</a></div>
                         </td>
                     </tr>
 
@@ -357,6 +367,7 @@
   IsString,
   IsStrongPassword,
   Matches,
+  MaxLength,
   MinLength,
 } from &#x27;class-validator&#x27;;
 
@@ -364,21 +375,26 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   @MinLength(3)
+  @MaxLength(96)
   firstName: string;
 
   @IsString()
   @IsOptional()
   @MinLength(3)
+  @MaxLength(96)
   lastName?: string;
 
   @IsEmail()
   @IsNotEmpty()
   @IsString()
+  @MinLength(3)
+  @MaxLength(96)
   email: string;
 
   @IsString()
   @IsStrongPassword()
   @MinLength(8)
+  @MaxLength(96)
   @Matches(
     /^(?&#x3D;.*[A-Z])(?&#x3D;.*[0-9])(?&#x3D;.*[!@#$%^&amp;*()_+\-&#x3D;\[\]{};&#x27;:&quot;\\|,.&lt;&gt;\/?])(?&#x3D;.{8,})/,
     {

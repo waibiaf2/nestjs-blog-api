@@ -134,14 +134,20 @@
 <!-- AppModule -->
 <g id="node4" class="node">
 <title>AppModule</title>
-<polygon fill="#8dd3c7" stroke="black" points="306.66,-187 303.66,-191 282.66,-191 279.66,-187 223.34,-187 223.34,-151 306.66,-151 306.66,-187"/>
-<text text-anchor="middle" x="265" y="-164.8" font-family="Times,serif" font-size="14.00">AppModule</text>
+<polygon fill="#8dd3c7" stroke="black" points="360.66,-187 357.66,-191 336.66,-191 333.66,-187 277.34,-187 277.34,-151 360.66,-151 360.66,-187"/>
+<text text-anchor="middle" x="319" y="-164.8" font-family="Times,serif" font-size="14.00">AppModule</text>
 </g>
 <!-- AuthModule&#45;&gt;AppModule -->
 <g id="edge1" class="edge">
 <title>AuthModule&#45;&gt;AppModule</title>
-<path fill="none" stroke="black" d="M425,-122.11C425,-141.34 425,-169 425,-169 425,-169 317.04,-169 317.04,-169"/>
-<polygon fill="black" stroke="black" points="317.04,-165.5 307.04,-169 317.04,-172.5 317.04,-165.5"/>
+<path fill="none" stroke="black" d="M439.59,-122.28C439.59,-143.32 439.59,-175 439.59,-175 439.59,-175 370.84,-175 370.84,-175"/>
+<polygon fill="black" stroke="black" points="370.84,-171.5 360.84,-175 370.84,-178.5 370.84,-171.5"/>
+</g>
+<!-- AuthModule&#45;&gt;AppModule -->
+<g id="edge2" class="edge">
+<title>AuthModule&#45;&gt;AppModule</title>
+<path fill="none" stroke="black" d="M410.41,-122.02C410.41,-139.37 410.41,-163 410.41,-163 410.41,-163 370.69,-163 370.69,-163"/>
+<polygon fill="black" stroke="black" points="370.69,-159.5 360.69,-163 370.69,-166.5 370.69,-159.5"/>
 </g>
 <!-- PostsModule -->
 <g id="node2" class="node">
@@ -150,10 +156,10 @@
 <text text-anchor="middle" x="319" y="-99.8" font-family="Times,serif" font-size="14.00">PostsModule</text>
 </g>
 <!-- PostsModule&#45;&gt;AppModule -->
-<g id="edge2" class="edge">
+<g id="edge3" class="edge">
 <title>PostsModule&#45;&gt;AppModule</title>
-<path fill="none" stroke="black" d="M290.64,-122.11C290.64,-122.11 290.64,-140.99 290.64,-140.99"/>
-<polygon fill="black" stroke="black" points="287.14,-140.99 290.64,-150.99 294.14,-140.99 287.14,-140.99"/>
+<path fill="none" stroke="black" d="M319,-122.11C319,-122.11 319,-140.99 319,-140.99"/>
+<polygon fill="black" stroke="black" points="315.5,-140.99 319,-150.99 322.5,-140.99 315.5,-140.99"/>
 </g>
 <!-- UsersModule -->
 <g id="node3" class="node">
@@ -162,10 +168,10 @@
 <text text-anchor="middle" x="211" y="-99.8" font-family="Times,serif" font-size="14.00">UsersModule</text>
 </g>
 <!-- UsersModule&#45;&gt;AppModule -->
-<g id="edge3" class="edge">
+<g id="edge4" class="edge">
 <title>UsersModule&#45;&gt;AppModule</title>
-<path fill="none" stroke="black" d="M239.94,-122.11C239.94,-122.11 239.94,-140.99 239.94,-140.99"/>
-<polygon fill="black" stroke="black" points="236.44,-140.99 239.94,-150.99 243.44,-140.99 236.44,-140.99"/>
+<path fill="none" stroke="black" d="M211,-122.02C211,-139.37 211,-163 211,-163 211,-163 267.24,-163 267.24,-163"/>
+<polygon fill="black" stroke="black" points="267.24,-166.5 277.24,-163 267.24,-159.5 267.24,-166.5"/>
 </g>
 <!-- AppService -->
 <g id="node5" class="node">
@@ -174,10 +180,10 @@
 <text text-anchor="middle" x="84" y="-99.8" font-family="Times,serif" font-size="14.00">AppService</text>
 </g>
 <!-- AppService&#45;&gt;AppModule -->
-<g id="edge4" class="edge">
+<g id="edge5" class="edge">
 <title>AppService&#45;&gt;AppModule</title>
-<path fill="none" stroke="black" d="M84,-122.11C84,-141.34 84,-169 84,-169 84,-169 213.02,-169 213.02,-169"/>
-<polygon fill="black" stroke="black" points="213.02,-172.5 223.02,-169 213.02,-165.5 213.02,-172.5"/>
+<path fill="none" stroke="black" d="M84,-122.28C84,-143.32 84,-175 84,-175 84,-175 267.26,-175 267.26,-175"/>
+<polygon fill="black" stroke="black" points="267.26,-178.5 277.26,-175 267.26,-171.5 267.26,-178.5"/>
 </g>
 </g>
 </svg>
@@ -277,6 +283,7 @@ import { UsersModule } from &#x27;./users/users.module&#x27;;
 import { PostsModule } from &#x27;./posts/posts.module&#x27;;
 import { AuthModule } from &#x27;./auth/auth.module&#x27;;
 import { TypeOrmModule } from &#x27;@nestjs/typeorm&#x27;;
+import { User } from &#x27;./users/user.entity&#x27;;
 
 @Module({
   imports: [
@@ -304,7 +311,7 @@ import { TypeOrmModule } from &#x27;@nestjs/typeorm&#x27;;
         username: &#x27;postgres&#x27;,
         password: &#x27;andy_123&#x27;,
         database: &#x27;nestjs-blog&#x27;,
-        entities: [],
+        entities: [User],
         synchronize: true,
       }),
     }),

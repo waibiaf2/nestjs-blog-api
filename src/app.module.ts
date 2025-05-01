@@ -16,16 +16,8 @@ import { MetaOptionsModule } from './meta-options/meta-options.module';
     PostsModule,
     AuthModule,
     AuthModule,
-    /*TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'andy_123',
-      database: 'nestjs-blog',
-      entities: [],
-      synchronize: true,
-    })*/
+    TagsModule,
+    MetaOptionsModule,
     TypeOrmModule.forRootAsync({
       imports: [],
       inject: [],
@@ -40,8 +32,6 @@ import { MetaOptionsModule } from './meta-options/meta-options.module';
         synchronize: true,
       }),
     }),
-    TagsModule,
-    MetaOptionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

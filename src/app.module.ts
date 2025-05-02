@@ -9,12 +9,13 @@ import { User } from './users/user.entity';
 import { Post } from './posts/post.entity';
 import { TagsModule } from './tags/tags.module';
 import { MetaOptionsModule } from './meta-options/meta-options.module';
+import { Tag } from './tags/tag.entity';
+import { MetaOption } from './meta-options/meta-option.entity';
 
 @Module({
   imports: [
     UsersModule,
     PostsModule,
-    AuthModule,
     AuthModule,
     TagsModule,
     MetaOptionsModule,
@@ -28,7 +29,7 @@ import { MetaOptionsModule } from './meta-options/meta-options.module';
         username: 'postgres',
         password: 'andy_123',
         database: 'nestjs-blog',
-        entities: [User, Post],
+        entities: [User, Post, Tag, MetaOption],
         synchronize: true,
       }),
     }),

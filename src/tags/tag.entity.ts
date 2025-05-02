@@ -3,11 +3,9 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Post } from '../posts/post.entity';
 
 @Entity()
 export class Tag {
@@ -57,7 +55,4 @@ export class Tag {
 
   @DeleteDateColumn()
   deleteDate: Date;
-
-/*  @ManyToOne(() => Post, (post) => post.tags)
-  post: Post;*/
 }

@@ -1,7 +1,6 @@
 import { PostType } from './enums/post-type.enum';
 import { PostStatus } from './enums/post-status.enum';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Post {

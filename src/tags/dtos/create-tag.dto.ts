@@ -11,7 +11,10 @@ import {
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateTagDto {
-  @ApiProperty()
+  @ApiProperty({
+    example: 'Web Development',
+    description: 'Posts about web development',
+  })
   @IsString()
   @IsNotEmpty()
   @MinLength(3)
@@ -19,8 +22,8 @@ export class CreateTagDto {
   name: string;
 
   @ApiProperty({
-    example: 'my-first-blog-post',
-    description: 'The slug of the post',
+    example: 'web-development',
+    description: 'The slug of the tag',
   })
   @IsString()
   @IsNotEmpty()
@@ -32,7 +35,10 @@ export class CreateTagDto {
   })
   slug: string;
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({
+    example: 'This tag is used for web development posts',
+    description: 'A short description of the tag',
+  })
   @IsString()
   @IsOptional()
   @MinLength(3)
@@ -46,7 +52,10 @@ export class CreateTagDto {
   @MaxLength(512)
   schema?: string;
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({
+    example: 'https://example.com/image.jpg',
+    description: 'The URL of the featured image for the tag',
+  })
   @IsUrl()
   @IsOptional()
   @MinLength(3)

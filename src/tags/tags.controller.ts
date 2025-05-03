@@ -1,4 +1,35 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { TagsService } from './providers/tags.service';
+import { CreateTagDto } from './dtos/create-tag.dto';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller('tags')
-export class TagsController {}
+export class TagsController {
+  constructor(private readonly tagsService: TagsService) {}
+
+  @ApiOperation({
+    summary: 'Create a new tag',
+    description: 'Creates a new tag in the database',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Tag created successfully',
+  })
+  @Post()
+  public createTag(@Body() createTagDto: CreateTagDto) {
+    return this.tagsService.create(createTagDto);
+  }
+
+  @ApiOperation({
+    summary: 'Fetches a list of tags',
+    description: 'Get all tags with pagination',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Returns a list of tags',
+  })
+  @Get()
+  public findAll() {
+    return this.tagsService.findAll();
+  }
+}

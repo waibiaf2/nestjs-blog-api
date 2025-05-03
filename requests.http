@@ -39,31 +39,29 @@ GET localhost:3000/posts/2
 GET http://localhost:3000/users/2
 
 
+################################3333
+#### Post Requests
+####################################
+
+###
+GET http://localhost:3000/posts
 
 ###
 POST localhost:3000/posts
 Content-Type: application/json
 
 {
-    "title": "What is new in NestJs",
-    "postType": "post",
-    "content": "Post Content, and this cool int e h processsss",
-    "slug": "what-is-new-in-nestjs",
-    "status": "draft",
-    "publishedOn": "2023-10-01T00:00:00.000Z",
-    "schema": "{\"version\":1,\"blocks\":[{\"type\":\"header\",\"data\":{\"text\":\"Article Header\",\"level\":1}},{\"type\":\"paragraph\",\"data\":{\"text\":\"Article content paragraph\"}}]}",
-    "tags": [
-        "nestjs",
-        "typescript"
-    ],
-    "metaOptions": [
-        {
-            "key": "sideBarEnabled",
-            "value": true
-        }
-    ]
+  "title": "Developing a Web Application with React and Node.js",
+  "postType": "series",
+  "content": "Enim rationale sit dignissim!Pturient duis tristique, exercitation officia? Donec excepteur, exercitationem vulputate facilis dicta, nisl fuga arcu tempor ante quos egestas maiores magni harum! Nam corrupti! Ridiculus architecto voluptatibus dictumst etiam ligula, augue fusce eligendi maiores perspiciatis dictum! Nulla posuere, anim massa saepe odit? Litora risus dictum.",
+  "slug": "developing-a-web-application-with-react-and-nodejs",
+  "status": "draft",
+  "schema": "{\"version\":1,\"blocks\":[{\"type\":\"header\",\"data\":{\"text\":\"Article Header\",\"level\":1}},{\"type\":\"paragraph\",\"data\":{\"text\":\"Article content paragraph\"}}]}",
+  "featuredImageUrl": "https://google.com/images/testimage.png",
+  "metaOptions": {
+    "metaValue": "{\"sidebarEnabled\": true, \"footerActive\": true}"
+  }
 }
-
 
 ###
 PATCH localhost:3000/posts/1
@@ -74,7 +72,7 @@ Content-Type: application/json
     "title": "What is new in NestJs, and Api Development",
     "postType": "post",
     "content": "Post Content, and this cool int e h processsss",
-    "slug": "what-is-new-in-nestjs",
+    "slug": "what-is-new-in-nestjs-3",
     "status": "draft",
     "publishedOn": "2023-10-01T00:00:00.000Z",
     "schema": "{\"version\":1,\"blocks\":[{\"type\":\"header\",\"data\":{\"text\":\"Article Header\",\"level\":1}},{\"type\":\"paragraph\",\"data\":{\"text\":\"Article content paragraph\"}}]}",
@@ -82,12 +80,45 @@ Content-Type: application/json
         "nestjs",
         "typescript"
     ],
-    "metaOptions": [
-        {
-            "key": "sideBarEnabled",
-            "value": "true"
-        }
-    ]
+    "metaOptions":{
+      "metaValue": "{\"sidebarEnabled\": true, \"footerActive\": true}"
+    }
 }
 
+###
+DELETE http://localhost:3000/posts?id=4
 
+
+#########################################
+### Meta Options Requests
+########################################
+
+###
+POST http://localhost:3000/meta-options
+Content-Type: application/json
+
+{
+  "metaValue": "{\"sidebarEnabled\": true, \"footerActive\": true}"
+}
+
+##################################
+### Meta Options Requests
+##################################
+
+
+####################################
+### Tags Requests
+####################################
+POST http://localhost:3000/tags
+Content-Type: application/json
+
+{
+  "name": "System Design and Architecture",
+  "slug": "system-design-and-architecture",
+  "description": "Web Development is the process of creating websites and web applications that run on the internet. It involves a combination of programming, design, and content management to build functional and visually appealing online platforms.",
+  "schema": "{\"version\":1,\"blocks\":[{\"type\":\"header\",\"data\":{\"text\":\"Article Header\",\"level\":1}},{\"type\":\"paragraph\",\"data\":{\"text\":\"Article content paragraph\"}}]}",
+  "featuredImageUrl": "https://google.com/imaages/myFirstTag.png"
+}
+
+###
+GET http://localhost:3000/tags

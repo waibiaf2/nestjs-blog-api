@@ -1,6 +1,15 @@
 import { PostType } from './enums/post-type.enum';
 import { PostStatus } from './enums/post-status.enum';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { MetaOption } from '../meta-options/meta-option.entity';
+import { Tag } from '../tags/tag.entity';
 
 @Entity()
 export class Post {
@@ -64,10 +73,15 @@ export class Post {
   publishedOn?: Date;
 
   // Todo: Add as separate entities using relationships
-  /*@OneToMany(() => Tag, (tag) => tag.post)
-  tags?: Tag[];*/
+  @OneToMany(() => Tag, (tag) => tag.post, {
+    cascade: ['insert', 'remove'],
+    eager: true,
+  })
+  tags?: Tag[];
 
-  //Todo: Add as separate entities using relationships
-  //@OneToMany(() => MetaOption, /*(metaOption) => metaOption.post)
-  //metaOptions?: MetaOption[];*/
+  @OneToOne(() => MetaOption, (metaOptions) => metaOptions.post, {
+    cascade: ['insert', 'remove'],
+    eager: true,
+  })
+  metaOptions?: MetaOption;
 }

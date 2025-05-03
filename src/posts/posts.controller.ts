@@ -10,7 +10,6 @@ import {
   Query,
 } from '@nestjs/common';
 import { PostsService } from './providers/posts.service';
-import { GetPostsParamsDto } from './dtos/get-posts-params.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { PatchPostDto } from './dtos/patch-posts.dto';
@@ -47,19 +46,21 @@ export class PostsController {
   }
 
   @Get('/users/:userId')
-  public findAllUserPosts(@Param('userId') userId: string) {
-    console.log(this.postsService.findAllByUserId(userId));
-    return 'These are my posts';
+  public findAllUserPosts(@Param('userId', ParseIntPipe) userId: number) {
+    return this.postsService.findAllByUserId(userId);
   }
 
   @Get(':id')
-  public findOneById(@Param() getPostsPrams: GetPostsParamsDto) {
-    return this.postsService.findOneById(getPostsPrams.id);
+  public findOneById(@Param('id', ParseIntPipe) id: number) {
+    return this.postsService.findOneById(id);
   }
 
   @Patch(':id')
-  public updatePost(@Body() patchPostDto: PatchPostDto) {
-    return this.postsService.updatePost(patchPostDto);
+  public updatePost(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() patchPostDto: PatchPostDto,
+  ) {
+    return this.postsService.updatePost(id, patchPostDto);
   }
 
   @Delete()

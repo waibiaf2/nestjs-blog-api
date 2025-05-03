@@ -3,13 +3,14 @@ import { PostStatus } from './enums/post-status.enum';
 import {
   Column,
   Entity,
-  JoinColumn,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { MetaOption } from '../meta-options/meta-option.entity';
 import { Tag } from '../tags/tag.entity';
+import { User } from '../users/user.entity';
 
 @Entity()
 export class Post {
@@ -73,15 +74,18 @@ export class Post {
   publishedOn?: Date;
 
   // Todo: Add as separate entities using relationships
-  @OneToMany(() => Tag, (tag) => tag.post, {
+  /*@OneToMany(() => Tag, (tag) => tag.post, {
     cascade: ['insert', 'remove'],
     eager: true,
   })
   tags?: Tag[];
-
+*/
   @OneToOne(() => MetaOption, (metaOptions) => metaOptions.post, {
     cascade: ['insert', 'remove'],
     eager: true,
   })
   metaOptions?: MetaOption;
+
+  @ManyToOne(() => User, (author) => author.posts)
+  author: User;
 }

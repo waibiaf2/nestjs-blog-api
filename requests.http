@@ -9,9 +9,9 @@ POST localhost:3000/users
 Content-Type: application/json
 
 {
-  "firstName": "John",
-  "lastName": "Doe",
-  "email": "johndoe@email.com",
+  "firstName": "Andrew",
+  "lastName": "Waibi",
+  "email": "waibiaf2@gmail.com",
   "password": "gLORRIAVIOS#_2"
 }
 
@@ -43,46 +43,40 @@ GET http://localhost:3000/users/2
 #### Post Requests
 ####################################
 
-###
+### Get All Posts
 GET http://localhost:3000/posts
+
+### Get All Posts of a User
+GET http://localhost:3000/posts/users/1
+
+### Get All Posts of a User
+GET http://localhost:3000/posts/5
 
 ###
 POST localhost:3000/posts
 Content-Type: application/json
 
 {
-  "title": "Developing a Web Application with React and Node.js",
-  "postType": "series",
+  "title": "Why DevOps is important in Software Development",
+  "postType": "post",
   "content": "Enim rationale sit dignissim!Pturient duis tristique, exercitation officia? Donec excepteur, exercitationem vulputate facilis dicta, nisl fuga arcu tempor ante quos egestas maiores magni harum! Nam corrupti! Ridiculus architecto voluptatibus dictumst etiam ligula, augue fusce eligendi maiores perspiciatis dictum! Nulla posuere, anim massa saepe odit? Litora risus dictum.",
-  "slug": "developing-a-web-application-with-react-and-nodejs",
+  "slug": "why-devops-is-important-in-software-development",
   "status": "draft",
   "schema": "{\"version\":1,\"blocks\":[{\"type\":\"header\",\"data\":{\"text\":\"Article Header\",\"level\":1}},{\"type\":\"paragraph\",\"data\":{\"text\":\"Article content paragraph\"}}]}",
   "featuredImageUrl": "https://google.com/images/testimage.png",
   "metaOptions": {
     "metaValue": "{\"sidebarEnabled\": true, \"footerActive\": true}"
-  }
+  },
+  "authorId": 4
 }
 
 ###
-PATCH localhost:3000/posts/1
+PATCH localhost:3000/posts/5
 Content-Type: application/json
 
 {
-    "id": 1,
-    "title": "What is new in NestJs, and Api Development",
-    "postType": "post",
-    "content": "Post Content, and this cool int e h processsss",
-    "slug": "what-is-new-in-nestjs-3",
-    "status": "draft",
-    "publishedOn": "2023-10-01T00:00:00.000Z",
-    "schema": "{\"version\":1,\"blocks\":[{\"type\":\"header\",\"data\":{\"text\":\"Article Header\",\"level\":1}},{\"type\":\"paragraph\",\"data\":{\"text\":\"Article content paragraph\"}}]}",
-    "tags": [
-        "nestjs",
-        "typescript"
-    ],
-    "metaOptions":{
-      "metaValue": "{\"sidebarEnabled\": true, \"footerActive\": true}"
-    }
+  "id": 5,
+  "status": "published"
 }
 
 ###

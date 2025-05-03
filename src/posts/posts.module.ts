@@ -9,6 +9,9 @@ import { MetaOption } from '../meta-options/meta-option.entity';
 @Module({
   controllers: [PostsController],
   providers: [PostsService],
-  imports: [UsersModule, TypeOrmModule.forFeature([Post, MetaOption])],
+  imports: [
+    UsersModule,
+    TypeOrmModule.forFeature([Post, MetaOption, UsersModule]),
+  ],
 })
 export class PostsModule {}

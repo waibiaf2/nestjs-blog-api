@@ -1,27 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { UsersService } from '../../users/providers/users.service';
 import { CreatePostDto } from '../dtos/create-post.dto';
-import { PostType } from '../enums/post-type.enum';
-import { PostStatus } from '../enums/post-status.enum';
-import { CreateMetaOptionsDto } from '../../meta-options/dtos/create-meta-options.dto';
 import { PatchPostDto } from '../dtos/patch-posts.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { MetaOption } from '../../meta-options/meta-option.entity';
 import { Repository } from 'typeorm';
 import { Post } from '../post.entity';
 
-export interface IPost {
-  id?: number;
-  title: string;
-  postType: PostType;
-  content: string;
-  slug: string;
-  status: PostStatus;
-  publishedOn: Date;
-  schema: string;
-  tags: string[];
-  metaOptions: CreateMetaOptionsDto[];
-}
 
 /**
  * PostsService class
@@ -51,8 +36,22 @@ export class PostsService {
    * @Param createPostDto - The data to create a new post
    * */
   async create(createPostDto: CreatePostDto) {
+    // Check if a user exists in the database
+    const author = await this.userService.findOneById(createPostDto.authorId);
+
+    if (!author) {
+      throw new NotFoundException(
+        `User with id ${createPostDto.authorId} not found`,
+      );
+    }
+
     //Create Post
-    const post = this.postRepository.create(createPostDto as Post);
+    // @ts-expect-error
+    const post = this.postRepository.create({
+      ...createPostDto,
+      author: author,
+    });
+
     await this.postRepository.save(post);
 
     //Return post
@@ -63,27 +62,46 @@ export class PostsService {
     return this.postRepository.find({
       relations: {
         metaOptions: true,
-        tags: true,
+        author: true,
       },
     });
   }
 
-  findAllByUserId(userId: string) {
-    console.log(userId);
-    //return this.posts[0];
-  }
+  async findAllByUserId(userId: number) {
+    // Check if a user exists in the database
+    const user = await this.userService.findOneById(userId);
 
-  findOneById(id: number) {
-    /*const post = this.posts.find((post) => post.id === id);
-    if (!post) {
-      throw new NotFoundException(`Post with id ${id} not found`);
+    if (!user) throw new NotFoundException(`User with id ${userId} not found`);
+
+    //Fetch posts and filter out those where the user id is equal to the author id
+    const posts = await this.postRepository.find({
+      where: {
+        author: user,
+      },
+    });
+
+    if (!posts.length) {
+      throw new NotFoundException(`User with id ${userId} has no posts`);
     }
-    return post;*/
-    console.log(id);
+
+    return posts;
   }
 
-  updatePost(patchPostDto: PatchPostDto) {
-    console.log(patchPostDto);
+  async findOneById(id: number) {
+    const post = await this.postRepository.findOneBy({ id });
+
+    if (!post) throw new NotFoundException(`Post with id ${id} not found`);
+
+    return post;
+  }
+
+  async updatePost(id: number, patchPostDto: Partial<PatchPostDto>) {
+    const post = await this.postRepository.findOneBy({ id });
+
+    if (!post) throw new NotFoundException(`Post with id ${id} not found`);
+
+    Object.assign(post, patchPostDto);
+    return await this.postRepository.save(post);
   }
 
   public async deletePost(id: number) {

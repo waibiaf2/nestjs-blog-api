@@ -4,12 +4,10 @@ import {
   Column,
   Entity,
   ManyToOne,
-  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { MetaOption } from '../meta-options/meta-option.entity';
-import { Tag } from '../tags/tag.entity';
 import { User } from '../users/user.entity';
 
 @Entity()

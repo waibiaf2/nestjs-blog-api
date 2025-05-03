@@ -1,6 +1,7 @@
 import {
   IsArray,
-  IsEnum, IsInt,
+  IsEnum,
+  IsInt,
   IsISO8601,
   IsJSON,
   IsNotEmpty,

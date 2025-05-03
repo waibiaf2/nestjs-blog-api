@@ -7,7 +7,6 @@ import { MetaOption } from '../../meta-options/meta-option.entity';
 import { Repository } from 'typeorm';
 import { Post } from '../post.entity';
 
-
 /**
  * PostsService class
  * @Method create

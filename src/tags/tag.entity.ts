@@ -27,7 +27,7 @@ export class Tag {
     length: 512,
     nullable: false,
     unique: true,
-  }) 
+  })
   slug: string;
 
   @Column({
@@ -58,6 +58,6 @@ export class Tag {
   @DeleteDateColumn()
   deleteDate: Date;
 
-  @ManyToOne(() => Post, (post) => post.tags)
-  post: Post;
+  /*@ManyToOne(() => Post, (post) => post.tags)
+  post: Post;*/
 }

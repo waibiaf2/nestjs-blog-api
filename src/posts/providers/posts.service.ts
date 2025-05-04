@@ -3,12 +3,12 @@ import { UsersService } from '../../users/providers/users.service';
 import { CreatePostDto } from '../dtos/create-post.dto';
 import { PatchPostDto } from '../dtos/patch-posts.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { MetaOption } from '../../meta-options/meta-option.entity';
 import { Repository } from 'typeorm';
 import { Post } from '../post.entity';
 
 /**
  * PostsService class
+ * @Description This class handles the business logic for posts
  * @Method create
  * @Method findAll
  * @Method findAllByUserId
@@ -19,13 +19,10 @@ export class PostsService {
   /**
    * Constructor for the PostsService
    * @param userService
-   * @param metaOptionRepository
    * @param postRepository
    **/
   constructor(
     private readonly userService: UsersService,
-    @InjectRepository(MetaOption)
-    private readonly metaOptionRepository: Repository<MetaOption>,
     @InjectRepository(Post)
     private readonly postRepository: Repository<Post>,
   ) {}

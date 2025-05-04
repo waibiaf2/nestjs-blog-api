@@ -45,16 +45,40 @@ export class PostsController {
     return this.postsService.findAll();
   }
 
+  @ApiOperation({
+    summary: 'Get all blog posts by user id',
+    description: 'Get all posts with the given user id',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'You get a 200 response is your post is create successfully.',
+  })
   @Get('/users/:userId')
   public findAllUserPosts(@Param('userId', ParseIntPipe) userId: number) {
     return this.postsService.findAllByUserId(userId);
   }
 
+  @ApiOperation({
+    summary: 'Get a blog post by id',
+    description: 'Get a post with the given id',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'You get a 200 response is your post is create successfully.',
+  })
   @Get(':id')
   public findOneById(@Param('id', ParseIntPipe) id: number) {
     return this.postsService.findOneById(id);
   }
 
+  @ApiOperation({
+    summary: 'Update a blog post by id',
+    description: 'Update a post with the given id',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'You get a 200 response is your post is create successfully.',
+  })
   @Patch(':id')
   public updatePost(
     @Param('id', ParseIntPipe) id: number,
@@ -63,6 +87,14 @@ export class PostsController {
     return this.postsService.updatePost(id, patchPostDto);
   }
 
+  @ApiOperation({
+    summary: 'Delete a blog post by id',
+    description: 'Delete a post with the given id',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'You get a 200 response is your post is create successfully.',
+  })
   @Delete()
   public deletePost(@Query('id', ParseIntPipe) id: number) {
     return this.postsService.deletePost(id);

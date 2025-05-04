@@ -23,7 +23,6 @@ export class UsersService {
   ) {}
 
   public async createUser(createUserDto: CreateUserDto) {
-    //Check if a user exists with the same email
     const existingUser = await this.userRepository.findOne({
       where: { email: createUserDto.email },
     });
@@ -47,7 +46,7 @@ export class UsersService {
   public findAll(limit: number, page: number) {
     console.log(limit, page);
     this.authService.login('johndoe@email.com', 'password', 1);
-    return null;
+    return this.userRepository.find();
   }
 
   /**
@@ -55,7 +54,7 @@ export class UsersService {
    * @param id - user id
    * @returns user object
    */
-  public async findOneById(id: number = 1) {
+  public async findOneById(id: number) {
     return await this.userRepository.findOneBy({ id });
   }
 }

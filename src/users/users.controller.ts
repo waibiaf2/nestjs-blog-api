@@ -11,7 +11,6 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './providers/users.service';
 import { CreateUserDto } from './dtos/create-user.dto';
-import { GetUserParamsDto } from './dtos/get-user-params.dto';
 import { PatchUserDto } from './dtos/patch-user.dto';
 import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 
@@ -50,20 +49,9 @@ export class UsersController {
     return this.userService.findAll(limit, page);
   }
 
-  // @Get(':id')
-  // public getUser(@Param() getUserParamsDto: GetUserParamsDto) {
-  //   return this.userService.findOneById(getUserParamsDto.id);
-  // }
-
-  @Get(':id/{:optional}')
-  public getUserWithOptionalParam(@Param() getUserParamsDto: GetUserParamsDto) {
-    const { id, optional } = getUserParamsDto;
-    console.log(getUserParamsDto);
-    console.log(id);
-    if (optional != undefined) {
-      console.log(optional);
-    }
-    return `User with id: ${id} and ${optional ? `${optional}` : ''}`;
+  @Get(':id')
+  public getUserWithOptionalParam(@Param('id', ParseIntPipe) id: number) {
+    return this.userService.findOneById(id);
   }
 
   @Post()

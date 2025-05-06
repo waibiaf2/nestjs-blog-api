@@ -135,6 +135,7 @@ export class PostsService {
         patchPostDto.featuredImageUrl ?? post?.featuredImageUrl;
       post.schema = patchPostDto.schema ?? post?.schema;
       post.postType = patchPostDto.postType ?? post?.postType;
+      post.status = patchPostDto.status ?? post?.status;
       post.slug = patchPostDto?.slug ?? post?.slug;
 
       // assign the new tags

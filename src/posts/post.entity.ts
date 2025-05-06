@@ -77,7 +77,6 @@ export class Post {
 
   // Todo: Add as separate entities using relationships
   @ManyToMany(() => Tag, (tag) => tag.posts, {
-    cascade: ['insert', 'remove'],
     eager: true,
   })
   @JoinTable()

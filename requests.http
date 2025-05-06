@@ -40,7 +40,7 @@ GET http://localhost:3000/posts
 GET http://localhost:3000/posts/users/4
 
 ### Get A Post
-GET http://localhost:3000/posts/13
+GET http://localhost:3000/posts/5
 
 ### Create A Post
 POST localhost:3000/posts
@@ -63,16 +63,16 @@ Content-Type: application/json
 }
 
 ### Update A Post
-PATCH localhost:3000/posts/15
+PATCH localhost:3000/posts
 Content-Type: application/json
 
 {
-  "id": 15,
+  "id": 13,
   "tags": [
-    2,
-    3
+    7,
+    8
   ],
-  "status": "published",
+  "status": "draft",
   "postType": "post"
 }
 
@@ -99,8 +99,8 @@ POST http://localhost:3000/tags
 Content-Type: application/json
 
 {
-  "name": "Javascript",
-  "slug": "javascript",
+  "name": "Backend Development",
+  "slug": "backend-development",
   "description": "All posts javascript",
   "featuredImageUrl": "https://google.com/imaages/myFirstTag.png"
 }
@@ -109,4 +109,7 @@ Content-Type: application/json
 GET http://localhost:3000/tags
 
 ### Delete A Tag
-DELETE http://localhost:3000/tags/2
+DELETE http://localhost:3000/tags/8
+
+### Delete A Tag
+DELETE http://localhost:3000/tags/6/soft-delete

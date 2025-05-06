@@ -48,6 +48,11 @@ export class TagsController {
 
   @Delete(':id')
   public async deleteTag(@Param('id', ParseIntPipe) id: number) {
-    await this.tagsService.delete(id);
+    return await this.tagsService.delete(id);
+  }
+  
+  @Delete(':id/soft-delete')
+  public async softDeleteTag(@Param('id', ParseIntPipe) id: number) {
+    return await this.tagsService.softRemove(id);
   }
 }

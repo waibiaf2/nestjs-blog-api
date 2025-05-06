@@ -1,17 +1,9 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { AuthService } from '../../auth/providers/auth.service';
-
-/**
- * Interface to define user object
- * @property firstName - user's first name
- * @property lastName - user's last name
- * @property email - user's email
- */
-export interface IUser {
-  firstName: string;
-  lastName: string;
-  email: string;
-}
+import { InjectRepository } from '@nestjs/typeorm';
+import { User } from '../user.entity';
+import { Repository } from 'typeorm';
+import { CreateUserDto } from '../dtos/create-user.dto';
 
 /**
  * Class to connect to users table and conduction user-based operations
@@ -19,18 +11,31 @@ export interface IUser {
 @Injectable()
 export class UsersService {
   /**
-   * Array to hold user objects
-   */
-  private users: IUser[];
-
-  /**
    * Constructor to inject Dependencies
+   * @param userRepository
    * @param authService - AuthService instance
    */
   constructor(
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
   ) {}
+
+  public async createUser(createUserDto: CreateUserDto) {
+    const existingUser = await this.userRepository.findOne({
+      where: { email: createUserDto.email },
+    });
+
+    //Handle exceptions
+    if (existingUser) throw new Error('UserEntity already exists');
+
+    //Create a new user
+    let newUser = this.userRepository.create(createUserDto);
+    newUser = await this.userRepository.save(newUser);
+
+    return newUser;
+  }
 
   /**
    * Method to find all users
@@ -41,26 +46,7 @@ export class UsersService {
   public findAll(limit: number, page: number) {
     console.log(limit, page);
     this.authService.login('johndoe@email.com', 'password', 1);
-
-    this.users = [
-      {
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'johndoe@email.com',
-      },
-      {
-        firstName: 'Jane',
-        lastName: 'Doe',
-        email: 'janedoe@email.com',
-      },
-      {
-        firstName: 'Jim',
-        lastName: 'Doe',
-        email: 'jindoe@email.com',
-      },
-    ];
-
-    return this.users;
+    return this.userRepository.find();
   }
 
   /**
@@ -68,12 +54,7 @@ export class UsersService {
    * @param id - user id
    * @returns user object
    */
-  public findOneById(id: number = 1) {
-    return {
-      id,
-      firstName: 'John',
-      lastName: 'Doe',
-      email: 'johndoe@email.com',
-    };
+  public async findOneById(id: number) {
+    return await this.userRepository.findOneBy({ id });
   }
 }

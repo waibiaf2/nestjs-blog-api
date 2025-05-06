@@ -1,13 +1,15 @@
 import {
   IsArray,
   IsEnum,
+  IsInt,
   IsISO8601,
   IsJSON,
-  IsNotEmpty, IsNumber,
+  IsNotEmpty,
   IsOptional,
   IsString,
   IsUrl,
   Matches,
+  MaxLength,
   MinLength,
   ValidateNested,
 } from 'class-validator';
@@ -15,7 +17,7 @@ import { Type } from 'class-transformer';
 
 import { PostType } from '../enums/post-type.enum';
 import { PostStatus } from '../enums/post-status.enum';
-import { CreatePostsMetaOptionsDto } from './create-posts-meta-options.dto';
+import { CreateMetaOptionsDto } from '../../meta-options/dtos/create-meta-options.dto';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreatePostDto {
@@ -25,6 +27,7 @@ export class CreatePostDto {
   })
   @IsString()
   @MinLength(5)
+  @MaxLength(512)
   title: string;
 
   @ApiProperty({
@@ -41,6 +44,8 @@ export class CreatePostDto {
   })
   @IsString()
   @IsNotEmpty()
+  @MinLength(5)
+  @MaxLength(255)
   @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
     message:
       'Slug should all small letters and uses "-" and without spaces. For example: my-url,',
@@ -79,6 +84,7 @@ export class CreatePostDto {
   })
   @IsUrl()
   @IsOptional()
+  @MaxLength(1024)
   featuredImageUrl?: string;
 
   @ApiPropertyOptional({
@@ -90,38 +96,36 @@ export class CreatePostDto {
   publishedOn?: Date;
 
   @ApiPropertyOptional({
-    description: 'Post categories',
-    example: ['nestjs', 'devOps'],
+    description: 'Array of Ids of tags associated with the post',
+    example: [1, 2, 3],
   })
   @IsOptional()
   @IsArray()
-  @IsString({ each: true })
-  @MinLength(3, { each: true })
-  tags?: string[];
+  @IsInt({ each: true })
+  tags?: number[];
 
   @ApiPropertyOptional({
-    type: 'array',
-    required: false,
-    items: {
-      type: 'object',
-      properties: {
-        key: {
-          type: 'string',
-          description:
-            'The key can be any string identifier for your meta data.',
-          example: 'sideBarEnabled',
-        },
-        value: {
-          type: 'any',
-          description: 'Any value you want to save.',
-          example: true,
-        },
+    type: 'object',
+    properties: {
+      metaValue: {
+        type: 'string',
+        format: 'json',
+        description: 'The metaValue is a json string',
+        example: '{"sideBarEnabled": true}',
       },
     },
   })
   @IsOptional()
-  @IsArray()
   @ValidateNested({ each: true })
-  @Type(() => CreatePostsMetaOptionsDto)
-  metaOptions?: CreatePostsMetaOptionsDto[];
+  @Type(() => CreateMetaOptionsDto)
+  metaOptions?: CreateMetaOptionsDto | null;
+
+  @ApiProperty({
+    type: 'integer',
+    required: true,
+    example: 1,
+  })
+  @IsInt()
+  @IsNotEmpty()
+  authorId: number;
 }

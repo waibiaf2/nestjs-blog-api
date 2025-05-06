@@ -6,23 +6,19 @@ import { PostsModule } from './posts/posts.module';
 import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/user.entity';
+import { Post } from './posts/post.entity';
+import { TagsModule } from './tags/tags.module';
+import { MetaOptionsModule } from './meta-options/meta-options.module';
+import { Tag } from './tags/tag.entity';
+import { MetaOption } from './meta-options/meta-option.entity';
 
 @Module({
   imports: [
     UsersModule,
     PostsModule,
     AuthModule,
-    AuthModule,
-    /*TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'andy_123',
-      database: 'nestjs-blog',
-      entities: [],
-      synchronize: true,
-    })*/
+    TagsModule,
+    MetaOptionsModule,
     TypeOrmModule.forRootAsync({
       imports: [],
       inject: [],
@@ -33,7 +29,7 @@ import { User } from './users/user.entity';
         username: 'postgres',
         password: 'andy_123',
         database: 'nestjs-blog',
-        entities: [User],
+        entities: [User, Post, Tag, MetaOption],
         synchronize: true,
       }),
     }),

@@ -20,21 +20,27 @@ export class TagsService {
   }
 
   public async findMultipleTags(tags: number[]) {
-    const results = await this.tagRepository.find({
+    return await this.tagRepository.find({
       where: {
         id: In(tags),
       },
     });
-
-    return results;
   }
 
-  findAll = () => {
+  public findAll = async () => {
     return this.tagRepository.find();
   };
 
-  async delete(id: number) {
+  public async delete(id: number) {
     await this.tagRepository.delete(id);
+    return {
+      deleted: true,
+      id: id,
+    };
+  }
+
+  public async softRemove(id: number) {
+    await this.tagRepository.softDelete(id);
     return {
       deleted: true,
       id: id,

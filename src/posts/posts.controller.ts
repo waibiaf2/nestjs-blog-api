@@ -7,7 +7,6 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Query,
 } from '@nestjs/common';
 import { PostsService } from './providers/posts.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
@@ -79,12 +78,9 @@ export class PostsController {
     status: 200,
     description: 'You get a 200 response is your post is create successfully.',
   })
-  @Patch(':id')
-  public updatePost(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() patchPostDto: PatchPostDto,
-  ) {
-    return this.postsService.updatePost(id, patchPostDto);
+  @Patch()
+  public updatePost(@Body() patchPostDto: PatchPostDto) {
+    return this.postsService.update(patchPostDto);
   }
 
   @ApiOperation({
@@ -95,8 +91,8 @@ export class PostsController {
     status: 200,
     description: 'You get a 200 response is your post is create successfully.',
   })
-  @Delete()
-  public deletePost(@Query('id', ParseIntPipe) id: number) {
+  @Delete(':id')
+  public deletePost(@Param('id', ParseIntPipe) id: number) {
     return this.postsService.deletePost(id);
   }
 }

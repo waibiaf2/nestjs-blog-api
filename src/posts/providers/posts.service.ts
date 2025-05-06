@@ -5,6 +5,7 @@ import { PatchPostDto } from '../dtos/patch-posts.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Post } from '../post.entity';
+import { TagsService } from '../../tags/providers/tags.service';
 
 /**
  * PostsService class
@@ -19,9 +20,11 @@ export class PostsService {
   /**
    * Constructor for the PostsService
    * @param userService
+   * @param tagsService
    * @param postRepository
    **/
   constructor(
+    private readonly tagsService: TagsService,
     private readonly userService: UsersService,
     @InjectRepository(Post)
     private readonly postRepository: Repository<Post>,
@@ -35,6 +38,12 @@ export class PostsService {
     // Check if a user exists in the database
     const author = await this.userService.findOneById(createPostDto.authorId);
 
+    const tags = await this.tagsService.findMultipleTags(
+      createPostDto.tags ?? [],
+    );
+
+    console.log(tags);
+
     if (!author) {
       throw new NotFoundException(
         `User with id ${createPostDto.authorId} not found`,
@@ -42,11 +51,11 @@ export class PostsService {
     }
 
     //Create Post
-    // @ts-expect-error
     const post = this.postRepository.create({
       ...createPostDto,
+      tags: tags,
       author: author,
-    });
+    } as Partial<Post>);
 
     await this.postRepository.save(post);
 
@@ -54,15 +63,23 @@ export class PostsService {
     return post;
   }
 
+  /**
+   * Fetch all posts, including the author, metaOptions, and tags
+   * */
   findAll() {
     return this.postRepository.find({
       relations: {
         metaOptions: true,
+        tags: true,
         author: true,
       },
     });
   }
 
+  /**
+   * Fetch all posts by user id
+   * @param userId - The id of the user
+   * */
   async findAllByUserId(userId: number) {
     // Check if a user exists in the database
     const user = await this.userService.findOneById(userId);
@@ -83,6 +100,10 @@ export class PostsService {
     return posts;
   }
 
+  /**
+   * Fetch a post by id
+   * @param id - The id of the post
+   * */
   async findOneById(id: number) {
     const post = await this.postRepository.findOneBy({ id });
 
@@ -91,13 +112,36 @@ export class PostsService {
     return post;
   }
 
-  async updatePost(id: number, patchPostDto: Partial<PatchPostDto>) {
-    const post = await this.postRepository.findOneBy({ id });
+  /**
+   * Fetch a post by slug
+   * @param patchPostDto
+   * */
+  async update(patchPostDto: PatchPostDto) {
+    // Find the tags
+    const tags = await this.tagsService.findMultipleTags(
+      patchPostDto.tags ?? [],
+    );
 
-    if (!post) throw new NotFoundException(`Post with id ${id} not found`);
+    // Find the post
+    const post = await this.postRepository.findOneBy({ id: patchPostDto.id });
 
-    Object.assign(post, patchPostDto);
-    return await this.postRepository.save(post);
+    //update the properties
+    if (post instanceof Post) {
+      post.title = patchPostDto.title ?? post?.title;
+      post.content = patchPostDto.content ?? post?.content;
+      post.metaOptions = patchPostDto.metaOptions ?? post?.metaOptions;
+      post.publishedOn = patchPostDto.publishedOn ?? post?.publishedOn;
+      post.featuredImageUrl =
+        patchPostDto.featuredImageUrl ?? post?.featuredImageUrl;
+      post.schema = patchPostDto.schema ?? post?.schema;
+      post.postType = patchPostDto.postType ?? post?.postType;
+      post.slug = patchPostDto?.slug ?? post?.slug;
+
+      // assign the new tags
+      post.tags = tags;
+    }
+
+    return await this.postRepository.save(post as Post);
   }
 
   public async deletePost(id: number) {

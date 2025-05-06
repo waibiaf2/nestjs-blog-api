@@ -1,8 +1,11 @@
+###################################
+### User Requests
+###################################
 ###
 GET localhost:3000/users
 
 ###
-GET localhost:3000/users/5
+GET localhost:3000/users/1/44
 
 ###
 POST localhost:3000/users
@@ -26,20 +29,7 @@ Content-Type: application/json
   "email": "johndoe@email.com"
 }
 
-########################################
-# Post Requests
-########################################
-###
-GET localhost:3000/posts
-
-####
-GET localhost:3000/posts/2
-
-###
-GET http://localhost:3000/users/2
-
-
-################################3333
+####################################
 #### Post Requests
 ####################################
 
@@ -47,46 +37,52 @@ GET http://localhost:3000/users/2
 GET http://localhost:3000/posts
 
 ### Get All Posts of a User
-GET http://localhost:3000/posts/users/1
+GET http://localhost:3000/posts/users/4
 
-### Get All Posts of a User
-GET http://localhost:3000/posts/5
+### Get A Post
+GET http://localhost:3000/posts/13
 
-###
+### Create A Post
 POST localhost:3000/posts
 Content-Type: application/json
 
 {
-  "title": "Why DevOps is important in Software Development",
-  "postType": "post",
+  "title": "Common Array methods in Javascript",
+  "postType": "series",
   "content": "Enim rationale sit dignissim!Pturient duis tristique, exercitation officia? Donec excepteur, exercitationem vulputate facilis dicta, nisl fuga arcu tempor ante quos egestas maiores magni harum! Nam corrupti! Ridiculus architecto voluptatibus dictumst etiam ligula, augue fusce eligendi maiores perspiciatis dictum! Nulla posuere, anim massa saepe odit? Litora risus dictum.",
-  "slug": "why-devops-is-important-in-software-development",
+  "slug": "common-array-methods-in-javascript-6",
   "status": "draft",
   "schema": "{\"version\":1,\"blocks\":[{\"type\":\"header\",\"data\":{\"text\":\"Article Header\",\"level\":1}},{\"type\":\"paragraph\",\"data\":{\"text\":\"Article content paragraph\"}}]}",
   "featuredImageUrl": "https://google.com/images/testimage.png",
+  "publishedOn": "2023-10-01T00:00:00.000Z",
+  "tags": [2,5],
   "metaOptions": {
     "metaValue": "{\"sidebarEnabled\": true, \"footerActive\": true}"
   },
   "authorId": 4
 }
 
-###
-PATCH localhost:3000/posts/5
+### Update A Post
+PATCH localhost:3000/posts/15
 Content-Type: application/json
 
 {
-  "id": 5,
-  "status": "published"
+  "id": 15,
+  "tags": [
+    2,
+    3
+  ],
+  "status": "published",
+  "postType": "post"
 }
 
-###
-DELETE http://localhost:3000/posts?id=4
+### Delete A Post
+DELETE http://localhost:3000/posts/15
 
 
 #########################################
 ### Meta Options Requests
 ########################################
-
 ###
 POST http://localhost:3000/meta-options
 Content-Type: application/json
@@ -94,10 +90,6 @@ Content-Type: application/json
 {
   "metaValue": "{\"sidebarEnabled\": true, \"footerActive\": true}"
 }
-
-##################################
-### Meta Options Requests
-##################################
 
 
 ####################################
@@ -107,12 +99,14 @@ POST http://localhost:3000/tags
 Content-Type: application/json
 
 {
-  "name": "System Design and Architecture",
-  "slug": "system-design-and-architecture",
-  "description": "Web Development is the process of creating websites and web applications that run on the internet. It involves a combination of programming, design, and content management to build functional and visually appealing online platforms.",
-  "schema": "{\"version\":1,\"blocks\":[{\"type\":\"header\",\"data\":{\"text\":\"Article Header\",\"level\":1}},{\"type\":\"paragraph\",\"data\":{\"text\":\"Article content paragraph\"}}]}",
+  "name": "Javascript",
+  "slug": "javascript",
+  "description": "All posts javascript",
   "featuredImageUrl": "https://google.com/imaages/myFirstTag.png"
 }
 
-###
+### Fetch all Tags
 GET http://localhost:3000/tags
+
+### Delete A Tag
+DELETE http://localhost:3000/tags/2

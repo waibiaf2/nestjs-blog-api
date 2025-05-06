@@ -1,11 +1,24 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+} from '@nestjs/common';
 import { TagsService } from './providers/tags.service';
 import { CreateTagDto } from './dtos/create-tag.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @Controller('tags')
 export class TagsController {
-  constructor(private readonly tagsService: TagsService) {}
+  constructor(
+    /**
+     * Inject TagsService
+     * */
+    private readonly tagsService: TagsService,
+  ) {}
 
   @ApiOperation({
     summary: 'Create a new tag',
@@ -16,7 +29,7 @@ export class TagsController {
     description: 'Tag created successfully',
   })
   @Post()
-  public createTag(@Body() createTagDto: CreateTagDto) {
+  public create(@Body() createTagDto: CreateTagDto) {
     return this.tagsService.create(createTagDto);
   }
 
@@ -31,5 +44,10 @@ export class TagsController {
   @Get()
   public findAll() {
     return this.tagsService.findAll();
+  }
+
+  @Delete(':id')
+  public async deleteTag(@Param('id', ParseIntPipe) id: number) {
+    await this.tagsService.delete(id);
   }
 }

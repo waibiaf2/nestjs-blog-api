@@ -4,7 +4,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../user.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from '../dtos/create-user.dto';
-import { ConfigService } from '@nestjs/config';
+import { ConfigType } from '@nestjs/config';
+import profileConfig from '../config/profile.config';
 
 /**
  * Class to connect to users table and conduction user-based operations
@@ -15,14 +16,15 @@ export class UsersService {
    * Constructor to inject Dependencies
    * @param userRepository
    * @param authService - AuthService instance
-   * @param configService
+   * @param profileConfiguration
    */
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
-    private readonly configService: ConfigService,
+    @Inject(profileConfig.KEY)
+    private readonly profileConfiguration: ConfigType<typeof profileConfig>,
   ) {}
 
   public async createUser(createUserDto: CreateUserDto) {
@@ -46,10 +48,13 @@ export class UsersService {
    * @param page - page number
    * @returns array of users
    */
-  public findAll(limit: number, page: number) {
+  public async findAll(limit: number, page: number) {
+    console.log(this.profileConfiguration);
+    console.log(this.profileConfiguration.apiKey);
+
     console.log(limit, page);
     this.authService.login('johndoe@email.com', 'password', 1);
-    return this.userRepository.find();
+    return await this.userRepository.find();
   }
 
   /**
@@ -58,8 +63,6 @@ export class UsersService {
    * @returns user object
    */
   public async findOneById(id: number) {
-    const s3_bucket = this.configService.get<string>('S3_BUCKET');
-    console.log(s3_bucket);
     return await this.userRepository.findOneBy({ id });
   }
 }

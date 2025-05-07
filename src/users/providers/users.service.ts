@@ -95,8 +95,7 @@ export class UsersService {
    * @returns user object
    */
   public async findOneById(id: number) {
-    if (!id)
-      throw new BadRequestException('id is required to find a user');
+    if (!id) throw new BadRequestException('id is required to find a user');
 
     let user: User | null;
 

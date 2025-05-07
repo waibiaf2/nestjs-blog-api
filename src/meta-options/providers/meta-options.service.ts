@@ -32,4 +32,8 @@ export class MetaOptionsService {
     const metaOption = await this.metaOptionsRepository.save(newMetaOption);
     return new Promise((resolve) => resolve(metaOption));
   }
+
+  findAll() {
+    return this.metaOptionsRepository.find();
+  }
 }

@@ -12,8 +12,8 @@ POST localhost:3000/users
 Content-Type: application/json
 
 {
-  "firstName": "Andrew",
-  "lastName": "Waibi",
+  "firstName": "Aziel",
+  "lastName": "Kisubi",
   "email": "waibiaf2@gmail.com",
   "password": "gLORRIAVIOS#_2"
 }
@@ -82,6 +82,9 @@ DELETE http://localhost:3000/posts/15
 #########################################
 ### Meta Options Requests
 ########################################
+GET http://localhost:3000/meta-options
+
+
 ###
 POST http://localhost:3000/meta-options
 Content-Type: application/json

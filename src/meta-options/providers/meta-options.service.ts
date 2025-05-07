@@ -33,7 +33,7 @@ export class MetaOptionsService {
     return new Promise((resolve) => resolve(metaOption));
   }
 
-  findAll() {
-    return this.metaOptionsRepository.find();
+  public async findAll() {
+    return await this.metaOptionsRepository.find();
   }
 }

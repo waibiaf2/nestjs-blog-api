@@ -1,4 +1,11 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+  RequestTimeoutException,
+} from '@nestjs/common';
 import { AuthService } from '../../auth/providers/auth.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../user.entity';
@@ -28,16 +35,41 @@ export class UsersService {
   ) {}
 
   public async createUser(createUserDto: CreateUserDto) {
-    const existingUser = await this.userRepository.findOne({
-      where: { email: createUserDto.email },
-    });
+    let existingUser: User | null;
+
+    try {
+      existingUser = await this.userRepository.findOne({
+        where: { email: createUserDto.email },
+      });
+    } catch (err) {
+      console.log(err);
+      throw new RequestTimeoutException(
+        'Unable to process the request at the moment, please try again later',
+        {
+          description: 'Error connecting to the database',
+        },
+      );
+    }
 
     //Handle exceptions
-    if (existingUser) throw new Error('UserEntity already exists');
+    if (existingUser)
+      throw new BadRequestException(
+        'User with a similar email already exists, please check your email',
+      );
 
     //Create a new user
-    let newUser = this.userRepository.create(createUserDto);
-    newUser = await this.userRepository.save(newUser);
+    let newUser = this.userRepository.create();
+
+    try {
+      newUser = await this.userRepository.save(newUser);
+    } catch (err) {
+      throw new RequestTimeoutException(
+        'Unable to process the request at the moment, please try again later',
+        {
+          description: 'Error connecting to the database',
+        },
+      );
+    }
 
     return newUser;
   }
@@ -63,6 +95,24 @@ export class UsersService {
    * @returns user object
    */
   public async findOneById(id: number) {
-    return await this.userRepository.findOneBy({ id });
+    if (!id)
+      throw new BadRequestException('id is required to find a user');
+
+    let user: User | null;
+
+    try {
+      user = await this.userRepository.findOneBy({ id });
+    } catch (err) {
+      throw new RequestTimeoutException(
+        'Unable to process the request at the moment, please try again later',
+        {
+          description: 'Error connecting to the database',
+        },
+      );
+    }
+
+    if (!user) throw new NotFoundException('User not found');
+
+    return user;
   }
 }

@@ -11,6 +11,7 @@ import { TagsModule } from './tags/tags.module';
 import { MetaOptionsModule } from './meta-options/meta-options.module';
 import { Tag } from './tags/tag.entity';
 import { MetaOption } from './meta-options/meta-option.entity';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -19,6 +20,13 @@ import { MetaOption } from './meta-options/meta-option.entity';
     AuthModule,
     TagsModule,
     MetaOptionsModule,
+    ConfigModule.forRoot(
+      /*Load environment variables from .env file*/
+      {
+        isGlobal: true,
+        envFilePath: ['.env.development'],
+      },
+    ),
     TypeOrmModule.forRootAsync({
       imports: [],
       inject: [],

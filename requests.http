@@ -5,7 +5,7 @@
 GET localhost:3000/users
 
 ###
-GET localhost:3000/users/1/44
+GET localhost:3000/users/1
 
 ###
 POST localhost:3000/users
@@ -17,7 +17,6 @@ Content-Type: application/json
   "email": "waibiaf2@gmail.com",
   "password": "gLORRIAVIOS#_2"
 }
-
 
 ###
 PATCH localhost:3000/users

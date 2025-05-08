@@ -1,8 +1,6 @@
 import {
   BadRequestException,
   forwardRef,
-  HttpException,
-  HttpStatus,
   Inject,
   Injectable,
   NotFoundException,
@@ -16,6 +14,7 @@ import { CreateUserDto } from '../dtos/create-user.dto';
 import { ConfigType } from '@nestjs/config';
 import profileConfig from '../config/profile.config';
 import { UsersCreateManyProvider } from './users-create-many.provider';
+import { CreateManyUsersDto } from '../dtos/create-many-users.dto';
 
 /**
  * Class to connect to users table and conduction user-based operations
@@ -87,18 +86,8 @@ export class UsersService {
    * @param page - page number
    * @returns array of users
    */
-  public findAll(limit: number, page: number) {
-    throw new HttpException(
-      {
-        status: HttpStatus.MOVED_PERMANENTLY,
-        error: 'Api endpoint does not exist.',
-      },
-      HttpStatus.MOVED_PERMANENTLY,
-      {
-        description:
-          'Error occured because the api endpoint was permanently moved',
-      },
-    );
+  public async findAll(limit: number, page: number) {
+    return await this.userRepository.find();
   }
 
   /**
@@ -127,7 +116,7 @@ export class UsersService {
     return user;
   }
 
-  public async createMany(createUserDto: CreateUserDto[]) {
-    await this.usersCreateManyProvider.createMany(createUserDto);
+  public async createMany(createUsersDto: CreateManyUsersDto) {
+    return await this.usersCreateManyProvider.createMany(createUsersDto);
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Tag } from '../tag.entity';
 import { In, Repository } from 'typeorm';
@@ -15,20 +15,45 @@ export class TagsService {
   ) {}
 
   public async create(createTagDto: CreateTagDto): Promise<Tag> {
-    const tag = this.tagRepository.create(createTagDto);
-    return await this.tagRepository.save(tag);
+    let tag = this.tagRepository.create(createTagDto);
+    try {
+      tag = await this.tagRepository.save(tag);
+    } catch (exception) {
+      console.log(exception);
+      throw new BadRequestException('Error could not connect to the database');
+    }
+    return tag;
   }
 
   public async findMultipleTags(tags: number[]) {
-    return await this.tagRepository.find({
-      where: {
-        id: In(tags),
-      },
-    });
+    let tagList: Tag[] = [];
+    try {
+      tagList = await this.tagRepository.find({
+        where: {
+          id: In(tags),
+        },
+      });
+    } catch (exception) {
+      throw new BadRequestException(
+        `Error could not connect to the database ${exception}`,
+      );
+    }
+
+    return tagList;
   }
 
   public findAll = async () => {
-    return this.tagRepository.find();
+    let tags: Tag[] = [];
+
+    try {
+      tags = await this.tagRepository.find();
+    } catch (exception) {
+      throw new BadRequestException(
+        `Connection to the database failed with error message:${exception}`,
+      );
+    }
+
+    return tags;
   };
 
   public async delete(id: number) {

@@ -1,4 +1,13 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  forwardRef,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+  NotFoundException,
+  RequestTimeoutException,
+} from '@nestjs/common';
 import { AuthService } from '../../auth/providers/auth.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../user.entity';
@@ -6,6 +15,7 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { ConfigType } from '@nestjs/config';
 import profileConfig from '../config/profile.config';
+import { UsersCreateManyProvider } from './users-create-many.provider';
 
 /**
  * Class to connect to users table and conduction user-based operations
@@ -17,27 +27,56 @@ export class UsersService {
    * @param userRepository
    * @param authService - AuthService instance
    * @param profileConfiguration
+   * @param usersCreatemanyProvider
    */
   constructor(
+    // If unsuccessful rollback
+
     @InjectRepository(User)
     private userRepository: Repository<User>,
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
     @Inject(profileConfig.KEY)
     private readonly profileConfiguration: ConfigType<typeof profileConfig>,
+    private readonly usersCreateManyProvider: UsersCreateManyProvider,
   ) {}
 
   public async createUser(createUserDto: CreateUserDto) {
-    const existingUser = await this.userRepository.findOne({
-      where: { email: createUserDto.email },
-    });
+    let existingUser: User | null;
+
+    try {
+      existingUser = await this.userRepository.findOne({
+        where: { email: createUserDto.email },
+      }); // If unsuccessful rollback
+    } catch (err) {
+      console.log(err);
+      throw new RequestTimeoutException(
+        'Unable to process the request at the moment, please try again later',
+        {
+          description: 'Error connecting to the database',
+        },
+      );
+    }
 
     //Handle exceptions
-    if (existingUser) throw new Error('UserEntity already exists');
+    if (existingUser)
+      throw new BadRequestException(
+        'User with a similar email already exists, please check your email',
+      );
 
     //Create a new user
-    let newUser = this.userRepository.create(createUserDto);
-    newUser = await this.userRepository.save(newUser);
+    let newUser = this.userRepository.create();
+
+    try {
+      newUser = await this.userRepository.save(newUser);
+    } catch (err) {
+      throw new RequestTimeoutException(
+        'Unable to process the request at the moment, please try again later',
+        {
+          description: 'Error connecting to the database',
+        },
+      );
+    }
 
     return newUser;
   }
@@ -48,13 +87,18 @@ export class UsersService {
    * @param page - page number
    * @returns array of users
    */
-  public async findAll(limit: number, page: number) {
-    console.log(this.profileConfiguration);
-    console.log(this.profileConfiguration.apiKey);
-
-    console.log(limit, page);
-    this.authService.login('johndoe@email.com', 'password', 1);
-    return await this.userRepository.find();
+  public findAll(limit: number, page: number) {
+    throw new HttpException(
+      {
+        status: HttpStatus.MOVED_PERMANENTLY,
+        error: 'Api endpoint does not exist.',
+      },
+      HttpStatus.MOVED_PERMANENTLY,
+      {
+        description:
+          'Error occured because the api endpoint was permanently moved',
+      },
+    );
   }
 
   /**
@@ -63,6 +107,27 @@ export class UsersService {
    * @returns user object
    */
   public async findOneById(id: number) {
-    return await this.userRepository.findOneBy({ id });
+    if (!id) throw new BadRequestException('id is required to find a user');
+
+    let user: User | null;
+
+    try {
+      user = await this.userRepository.findOneBy({ id });
+    } catch (err) {
+      throw new RequestTimeoutException(
+        'Unable to process the request at the moment, please try again later',
+        {
+          description: 'Error connecting to the database',
+        },
+      );
+    }
+
+    if (!user) throw new NotFoundException('User not found');
+
+    return user;
+  }
+
+  public async createMany(createUserDto: CreateUserDto[]) {
+    await this.usersCreateManyProvider.createMany(createUserDto);
   }
 }

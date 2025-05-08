@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { UsersService } from '../../users/providers/users.service';
 import { CreatePostDto } from '../dtos/create-post.dto';
 import { PatchPostDto } from '../dtos/patch-posts.dto';
@@ -51,13 +55,19 @@ export class PostsService {
     }
 
     //Create Post
-    const post = this.postRepository.create({
+    let post = this.postRepository.create({
       ...createPostDto,
       tags: tags,
       author: author,
     } as Partial<Post>);
 
-    await this.postRepository.save(post);
+    try {
+      post = await this.postRepository.save(post);
+    } catch (err) {
+      throw new BadRequestException('Error creating post, please try again', {
+        description: 'Connectiont to the database failed',
+      });
+    }
 
     //Return post
     return post;
@@ -67,13 +77,23 @@ export class PostsService {
    * Fetch all posts, including the author, metaOptions, and tags
    * */
   findAll() {
-    return this.postRepository.find({
-      relations: {
-        metaOptions: true,
-        tags: true,
-        author: true,
-      },
-    });
+    let posts;
+
+    try {
+      posts = this.postRepository.find({
+        relations: {
+          metaOptions: true,
+          tags: true,
+          author: true,
+        },
+      });
+    } catch (err) {
+      throw new BadRequestException('Error fetching posts, please try again', {
+        description: 'Connection to the database failed',
+      });
+    }
+
+    return posts;
   }
 
   /**
@@ -86,17 +106,20 @@ export class PostsService {
 
     if (!user) throw new NotFoundException(`User with id ${userId} not found`);
 
-    //Fetch posts and filter out those where the user id is equal to the author id
-    const posts = await this.postRepository.find({
-      where: {
-        author: user,
-      },
-    });
-
-    if (!posts.length) {
-      throw new NotFoundException(`User with id ${userId} has no posts`);
+    let posts: Post[];
+    try {
+      posts = await this.postRepository.find({
+        where: {
+          author: user,
+        },
+      });
+    } catch (err) {
+      throw new BadRequestException('Error fetching posts, please try again', {
+        description: 'Connection to the database failed',
+      });
     }
 
+    //Fetch posts and filter out those where the user id is equal to the author id
     return posts;
   }
 
@@ -122,26 +145,34 @@ export class PostsService {
       patchPostDto.tags ?? [],
     );
 
-    // Find the post
-    const post = await this.postRepository.findOneBy({ id: patchPostDto.id });
+    let post: Post | null;
 
-    //update the properties
-    if (post instanceof Post) {
-      post.title = patchPostDto.title ?? post?.title;
-      post.content = patchPostDto.content ?? post?.content;
-      post.metaOptions = patchPostDto.metaOptions ?? post?.metaOptions;
-      post.publishedOn = patchPostDto.publishedOn ?? post?.publishedOn;
-      post.featuredImageUrl =
-        patchPostDto.featuredImageUrl ?? post?.featuredImageUrl;
-      post.schema = patchPostDto.schema ?? post?.schema;
-      post.postType = patchPostDto.postType ?? post?.postType;
-      post.status = patchPostDto.status ?? post?.status;
-      post.slug = patchPostDto?.slug ?? post?.slug;
+    try {
+      // Find the post
+      post = await this.postRepository.findOneBy({ id: patchPostDto.id });
 
-      // assign the new tags
-      post.tags = tags;
+      if (post instanceof Post) {
+        post.title = patchPostDto.title ?? post?.title;
+        post.content = patchPostDto.content ?? post?.content;
+        post.metaOptions = patchPostDto.metaOptions ?? post?.metaOptions;
+        post.publishedOn = patchPostDto.publishedOn ?? post?.publishedOn;
+        post.featuredImageUrl =
+          patchPostDto.featuredImageUrl ?? post?.featuredImageUrl;
+        post.schema = patchPostDto.schema ?? post?.schema;
+        post.postType = patchPostDto.postType ?? post?.postType;
+        post.status = patchPostDto.status ?? post?.status;
+        post.slug = patchPostDto?.slug ?? post?.slug;
+
+        // assign the new tags
+        post.tags = tags;
+      }
+    } catch (err) {
+      throw new BadRequestException('Error fetching post, please try again', {
+        description: 'Connection to the database failed',
+      });
     }
 
+    //update the properties
     return await this.postRepository.save(post as Post);
   }
 

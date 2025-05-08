@@ -86,6 +86,9 @@ export class PostsService {
   public async findAll(userId?: number) {
     let posts: Post[] = [];
 
+    /**
+     * Fetch posts for a particular user
+     * */
     if (userId) {
       // Check if a user exists in the database
       const user = await this.userService.findOneById(userId);
@@ -106,10 +109,12 @@ export class PostsService {
         );
       }
 
-      //Fetch posts and filter out those where the user id is equal to the author id
       return posts;
     }
 
+    /**
+     * Fetching all posts
+     * */
     try {
       posts = await this.postRepository.find({
         relations: {
@@ -119,9 +124,10 @@ export class PostsService {
         },
       });
     } catch (err) {
-      throw new BadRequestException('Error fetching posts, please try again', {
-        description: 'Connection to the database failed',
-      });
+      throw new BadRequestException(
+        'Error fetching posts, please try again',
+        String(err),
+      );
     }
 
     return posts;

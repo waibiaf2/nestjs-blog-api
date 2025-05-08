@@ -19,6 +19,27 @@ Content-Type: application/json
 }
 
 ###
+POST localhost:3000/users/create-many
+Content-Type: application/json
+
+{
+  "users": [
+    {
+      "firstName": "Franklin",
+      "lastName": "Waibi",
+      "email": "franklin@gmail.com",
+      "password": "gLORRIAVIOS#_2"
+    },
+    {
+      "firstName": "Francesca",
+      "lastName": "Waibi",
+      "email": "francesca@gmail.com",
+      "password": "gLORRIAVIOS#_2"
+    }
+  ]
+}
+
+###
 PATCH localhost:3000/users
 Content-Type: application/json
 
@@ -36,7 +57,7 @@ Content-Type: application/json
 GET http://localhost:3000/posts
 
 ### Get All Posts of a User
-GET http://localhost:3000/posts/users/4
+GET http://localhost:3000/posts/4
 
 ### Get A Post
 GET http://localhost:3000/posts/5

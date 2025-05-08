@@ -74,13 +74,44 @@ export class PostsService {
   }
 
   /**
+   * Method signatures for overloading the findAll
+   */
+  findAll(): Promise<Post[]>;
+  findAll(userId: number): Promise<Post[]>;
+
+  /**
    * Fetch all posts, including the author, metaOptions, and tags
+   * Also Fetches all posts for A specific user
    * */
-  findAll() {
-    let posts;
+  public async findAll(userId?: number) {
+    let posts: Post[] = [];
+
+    if (userId) {
+      // Check if a user exists in the database
+      const user = await this.userService.findOneById(userId);
+
+      if (!user)
+        throw new NotFoundException(`User with id ${userId} not found`);
+
+      try {
+        posts = await this.postRepository.find({
+          where: {
+            author: user,
+          },
+        });
+      } catch (error) {
+        throw new BadRequestException(
+          'Error fetching posts, please try again',
+          String(error),
+        );
+      }
+
+      //Fetch posts and filter out those where the user id is equal to the author id
+      return posts;
+    }
 
     try {
-      posts = this.postRepository.find({
+      posts = await this.postRepository.find({
         relations: {
           metaOptions: true,
           tags: true,
@@ -100,28 +131,8 @@ export class PostsService {
    * Fetch all posts by user id
    * @param userId - The id of the user
    * */
-  async findAllByUserId(userId: number) {
-    // Check if a user exists in the database
-    const user = await this.userService.findOneById(userId);
 
-    if (!user) throw new NotFoundException(`User with id ${userId} not found`);
-
-    let posts: Post[];
-    try {
-      posts = await this.postRepository.find({
-        where: {
-          author: user,
-        },
-      });
-    } catch (err) {
-      throw new BadRequestException('Error fetching posts, please try again', {
-        description: 'Connection to the database failed',
-      });
-    }
-
-    //Fetch posts and filter out those where the user id is equal to the author id
-    return posts;
-  }
+  //async findAll(userId: number) {}
 
   /**
    * Fetch a post by id

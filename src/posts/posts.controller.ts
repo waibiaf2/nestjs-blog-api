@@ -40,8 +40,8 @@ export class PostsController {
     description: 'You get a 200 response is your post is create successfully.',
   })
   @Get()
-  public findAll() {
-    return this.postsService.findAll();
+  public async findAll() {
+    return await this.postsService.findAll();
   }
 
   @ApiOperation({
@@ -52,9 +52,9 @@ export class PostsController {
     status: 200,
     description: 'You get a 200 response is your post is create successfully.',
   })
-  @Get('/users/:userId')
-  public findAllUserPosts(@Param('userId', ParseIntPipe) userId: number) {
-    return this.postsService.findAllByUserId(userId);
+  @Get(':userId')
+  public findAllPostsByUserId(@Param('userId', ParseIntPipe) userId: number) {
+    return this.postsService.findAll(userId);
   }
 
   @ApiOperation({

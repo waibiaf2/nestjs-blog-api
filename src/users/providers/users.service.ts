@@ -1,6 +1,8 @@
 import {
   BadRequestException,
   forwardRef,
+  HttpException,
+  HttpStatus,
   Inject,
   Injectable,
   NotFoundException,
@@ -13,6 +15,7 @@ import { Repository } from 'typeorm';
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { ConfigType } from '@nestjs/config';
 import profileConfig from '../config/profile.config';
+import { UsersCreateManyProvider } from './users-create-many.provider';
 
 /**
  * Class to connect to users table and conduction user-based operations
@@ -24,14 +27,18 @@ export class UsersService {
    * @param userRepository
    * @param authService - AuthService instance
    * @param profileConfiguration
+   * @param usersCreatemanyProvider
    */
   constructor(
+    // If unsuccessful rollback
+
     @InjectRepository(User)
     private userRepository: Repository<User>,
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
     @Inject(profileConfig.KEY)
     private readonly profileConfiguration: ConfigType<typeof profileConfig>,
+    private readonly usersCreateManyProvider: UsersCreateManyProvider,
   ) {}
 
   public async createUser(createUserDto: CreateUserDto) {
@@ -40,7 +47,7 @@ export class UsersService {
     try {
       existingUser = await this.userRepository.findOne({
         where: { email: createUserDto.email },
-      });
+      }); // If unsuccessful rollback
     } catch (err) {
       console.log(err);
       throw new RequestTimeoutException(
@@ -80,13 +87,18 @@ export class UsersService {
    * @param page - page number
    * @returns array of users
    */
-  public async findAll(limit: number, page: number) {
-    console.log(this.profileConfiguration);
-    console.log(this.profileConfiguration.apiKey);
-
-    console.log(limit, page);
-    this.authService.login('johndoe@email.com', 'password', 1);
-    return await this.userRepository.find();
+  public findAll(limit: number, page: number) {
+    throw new HttpException(
+      {
+        status: HttpStatus.MOVED_PERMANENTLY,
+        error: 'Api endpoint does not exist.',
+      },
+      HttpStatus.MOVED_PERMANENTLY,
+      {
+        description:
+          'Error occured because the api endpoint was permanently moved',
+      },
+    );
   }
 
   /**
@@ -113,5 +125,9 @@ export class UsersService {
     if (!user) throw new NotFoundException('User not found');
 
     return user;
+  }
+
+  public async createMany(createUserDto: CreateUserDto[]) {
+    await this.usersCreateManyProvider.createMany(createUserDto);
   }
 }

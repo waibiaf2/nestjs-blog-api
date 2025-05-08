@@ -19,7 +19,6 @@ import { ApiOperation, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 export class UsersController {
   constructor(private userService: UsersService) {}
 
-  @Get()
   @ApiOperation({
     summary: 'Fetches a list of users on the application',
     description: 'Get all users with pagination',
@@ -42,6 +41,7 @@ export class UsersController {
     description: 'The page number to return',
     example: 1,
   })
+  @Get()
   public getUsers(
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
@@ -57,6 +57,11 @@ export class UsersController {
   @Post()
   public createUser(@Body() createUserDto: CreateUserDto) {
     return this.userService.createUser(createUserDto);
+  }
+
+  @Post()
+  public createManyUsers(@Body() createUserDto: CreateUserDto[]) {
+    return this.userService.createMany(createUserDto);
   }
 
   @Patch()

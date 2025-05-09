@@ -54,10 +54,10 @@ Content-Type: application/json
 ####################################
 
 ### Get All Posts
-GET http://localhost:3000/posts
+GET http://localhost:3000/posts?limit=2&page=2
 
 ### Get All Posts of a User
-GET http://localhost:3000/posts/4
+GET http://localhost:3000/posts/users/4?limit=2&page=1
 
 ### Get A Post
 GET http://localhost:3000/posts/5

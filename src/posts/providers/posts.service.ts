@@ -10,6 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Post } from '../post.entity';
 import { TagsService } from '../../tags/providers/tags.service';
+import { GetPostsDto } from '../dtos/get-posts.dto';
 
 /**
  * PostsService class
@@ -64,9 +65,10 @@ export class PostsService {
     try {
       post = await this.postRepository.save(post);
     } catch (err) {
-      throw new BadRequestException('Error creating post, please try again', {
-        description: 'Connectiont to the database failed',
-      });
+      throw new BadRequestException(
+        'Error creating post, please try again',
+        String(err),
+      );
     }
 
     //Return post
@@ -76,14 +78,14 @@ export class PostsService {
   /**
    * Method signatures for overloading the findAll
    */
-  findAll(): Promise<Post[]>;
-  findAll(userId: number): Promise<Post[]>;
+  findAll(postQuery: GetPostsDto): Promise<Post[]>;
+  findAll(postQuery: GetPostsDto, userId: number): Promise<Post[]>;
 
   /**
    * Fetch all posts, including the author, metaOptions, and tags
    * Also Fetches all posts for A specific user
    * */
-  public async findAll(userId?: number) {
+  public async findAll(postQuery: GetPostsDto, userId?: number) {
     let posts: Post[] = [];
 
     /**
@@ -101,6 +103,13 @@ export class PostsService {
           where: {
             author: user,
           },
+          relations: {
+            metaOptions: true,
+            tags: true,
+            author: true,
+          },
+          skip: ((postQuery.page ?? 1) - 1) * (postQuery.limit ?? 0),
+          take: postQuery.limit,
         });
       } catch (error) {
         throw new BadRequestException(
@@ -122,6 +131,8 @@ export class PostsService {
           tags: true,
           author: true,
         },
+        skip: ((postQuery.page ?? 1) - 1) * (postQuery.limit ?? 0),
+        take: postQuery.limit,
       });
     } catch (err) {
       throw new BadRequestException(
@@ -145,9 +156,16 @@ export class PostsService {
    * @param id - The id of the post
    * */
   async findOneById(id: number) {
-    const post = await this.postRepository.findOneBy({ id });
+    let post: Post | null;
 
-    if (!post) throw new NotFoundException(`Post with id ${id} not found`);
+    try {
+      post = await this.postRepository.findOneBy({ id });
+    } catch (error) {
+      throw new BadRequestException(
+        'Error fetching post, please try again',
+        String(error),
+      );
+    }
 
     return post;
   }
@@ -184,9 +202,10 @@ export class PostsService {
         post.tags = tags;
       }
     } catch (err) {
-      throw new BadRequestException('Error fetching post, please try again', {
-        description: 'Connection to the database failed',
-      });
+      throw new BadRequestException(
+        'Error fetching post, please try again',
+        String(err),
+      );
     }
 
     //update the properties

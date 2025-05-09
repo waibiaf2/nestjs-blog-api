@@ -7,11 +7,13 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { PostsService } from './providers/posts.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { PatchPostDto } from './dtos/patch-posts.dto';
+import { GetPostsDto } from './dtos/get-posts.dto';
 
 @Controller('posts')
 @ApiTags('Posts')
@@ -40,8 +42,8 @@ export class PostsController {
     description: 'You get a 200 response is your post is create successfully.',
   })
   @Get()
-  public async findAll() {
-    return await this.postsService.findAll();
+  public async findAll(@Query() postQuery: GetPostsDto) {
+    return await this.postsService.findAll(postQuery);
   }
 
   @ApiOperation({
@@ -52,9 +54,13 @@ export class PostsController {
     status: 200,
     description: 'You get a 200 response is your post is create successfully.',
   })
-  @Get(':userId')
-  public findAllPostsByUserId(@Param('userId', ParseIntPipe) userId: number) {
-    return this.postsService.findAll(userId);
+  @Get('/users/:userId')
+  public findAllPostsByUserId(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Query() postQuery: GetPostsDto,
+  ) {
+    console.log(postQuery);
+    return this.postsService.findAll(postQuery, userId);
   }
 
   @ApiOperation({

@@ -19,7 +19,6 @@ import { Paginated } from '../../common/pagination/interfaces/paginated.inteface
  * @Description This class handles the business logic for posts
  * @Method create
  * @Method findAll
- * @Method findAllByUserId
  * @Method findOneById
  **/
 @Injectable()

@@ -46,7 +46,7 @@ export class PaginationProvider<T extends ObjectLiteral> {
         ? paginationQuery.page
         : paginationQuery.page! - 1;
 
-    const finalResponse: Paginated<T> = {
+    return {
       data: results,
       meta: {
         itemsPerPage: paginationQuery.limit ?? 0,
@@ -62,7 +62,5 @@ export class PaginationProvider<T extends ObjectLiteral> {
         previous: `${newUrl.origin}${newUrl.pathname}?limit=${paginationQuery.limit}&page=${previousPage}`,
       },
     };
-
-    return finalResponse;
   }
 }

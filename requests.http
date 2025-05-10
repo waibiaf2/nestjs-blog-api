@@ -12,9 +12,9 @@ POST localhost:3000/users
 Content-Type: application/json
 
 {
-  "firstName": "Aziel",
-  "lastName": "Kisubi",
-  "email": "waibiaf2+55@gmail.com",
+  "firstName": "Samuel",
+  "lastName": "Katabi",
+  "email": "katabi@gmail.com",
   "password": "gLORRIAVIOS#_2"
 }
 

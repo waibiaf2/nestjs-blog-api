@@ -11,6 +11,8 @@ import { Repository } from 'typeorm';
 import { Post } from '../post.entity';
 import { TagsService } from '../../tags/providers/tags.service';
 import { GetPostsDto } from '../dtos/get-posts.dto';
+import { PaginationProvider } from '../../common/pagination/providers/pagination.provider';
+import { Paginated } from '../../common/pagination/interfaces/paginated.inteface';
 
 /**
  * PostsService class
@@ -27,12 +29,16 @@ export class PostsService {
    * @param userService
    * @param tagsService
    * @param postRepository
+   * @param paginationProvider
    **/
   constructor(
     private readonly tagsService: TagsService,
     private readonly userService: UsersService,
     @InjectRepository(Post)
     private readonly postRepository: Repository<Post>,
+    /**
+     * Injecting pagionation provider*/
+    private readonly paginationProvider: PaginationProvider<Post>,
   ) {}
 
   /**
@@ -76,64 +82,22 @@ export class PostsService {
   }
 
   /**
-   * Method signatures for overloading the findAll
-   */
-  findAll(postQuery: GetPostsDto): Promise<Post[]>;
-  findAll(postQuery: GetPostsDto, userId: number): Promise<Post[]>;
-
-  /**
    * Fetch all posts, including the author, metaOptions, and tags
    * Also Fetches all posts for A specific user
    * */
-  public async findAll(postQuery: GetPostsDto, userId?: number) {
-    let posts: Post[] = [];
-
-    /**
-     * Fetch posts for a particular user
-     * */
-    if (userId) {
-      // Check if a user exists in the database
-      const user = await this.userService.findOneById(userId);
-
-      if (!user)
-        throw new NotFoundException(`User with id ${userId} not found`);
-
-      try {
-        posts = await this.postRepository.find({
-          where: {
-            author: user,
-          },
-          relations: {
-            metaOptions: true,
-            tags: true,
-            author: true,
-          },
-          skip: ((postQuery.page ?? 1) - 1) * (postQuery.limit ?? 0),
-          take: postQuery.limit,
-        });
-      } catch (error) {
-        throw new BadRequestException(
-          'Error fetching posts, please try again',
-          String(error),
-        );
-      }
-
-      return posts;
-    }
-
+  public async findAll(postQuery: GetPostsDto): Promise<Paginated<Post>> {
+    let posts: Paginated<Post> | null;
     /**
      * Fetching all posts
      * */
     try {
-      posts = await this.postRepository.find({
-        relations: {
-          metaOptions: true,
-          tags: true,
-          author: true,
+      posts = await this.paginationProvider.paginateQuery(
+        {
+          limit: postQuery.limit,
+          page: postQuery.page,
         },
-        skip: ((postQuery.page ?? 1) - 1) * (postQuery.limit ?? 0),
-        take: postQuery.limit,
-      });
+        this.postRepository,
+      );
     } catch (err) {
       throw new BadRequestException(
         'Error fetching posts, please try again',

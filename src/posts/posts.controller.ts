@@ -47,23 +47,6 @@ export class PostsController {
   }
 
   @ApiOperation({
-    summary: 'Get all blog posts by user id',
-    description: 'Get all posts with the given user id',
-  })
-  @ApiResponse({
-    status: 200,
-    description: 'You get a 200 response is your post is create successfully.',
-  })
-  @Get('/users/:userId')
-  public findAllPostsByUserId(
-    @Param('userId', ParseIntPipe) userId: number,
-    @Query() postQuery: GetPostsDto,
-  ) {
-    console.log(postQuery);
-    return this.postsService.findAll(postQuery, userId);
-  }
-
-  @ApiOperation({
     summary: 'Get a blog post by id',
     description: 'Get a post with the given id',
   })

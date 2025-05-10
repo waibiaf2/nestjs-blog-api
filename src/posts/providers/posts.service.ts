@@ -10,13 +10,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Post } from '../post.entity';
 import { TagsService } from '../../tags/providers/tags.service';
+import { GetPostsDto } from '../dtos/get-posts.dto';
+import { PaginationProvider } from '../../common/pagination/providers/pagination.provider';
+import { Paginated } from '../../common/pagination/interfaces/paginated.inteface';
 
 /**
  * PostsService class
  * @Description This class handles the business logic for posts
  * @Method create
  * @Method findAll
- * @Method findAllByUserId
  * @Method findOneById
  **/
 @Injectable()
@@ -26,12 +28,16 @@ export class PostsService {
    * @param userService
    * @param tagsService
    * @param postRepository
+   * @param paginationProvider
    **/
   constructor(
     private readonly tagsService: TagsService,
     private readonly userService: UsersService,
     @InjectRepository(Post)
     private readonly postRepository: Repository<Post>,
+    /**
+     * Injecting pagionation provider*/
+    private readonly paginationProvider: PaginationProvider<Post>,
   ) {}
 
   /**
@@ -64,9 +70,10 @@ export class PostsService {
     try {
       post = await this.postRepository.save(post);
     } catch (err) {
-      throw new BadRequestException('Error creating post, please try again', {
-        description: 'Connectiont to the database failed',
-      });
+      throw new BadRequestException(
+        'Error creating post, please try again',
+        String(err),
+      );
     }
 
     //Return post
@@ -74,55 +81,22 @@ export class PostsService {
   }
 
   /**
-   * Method signatures for overloading the findAll
-   */
-  findAll(): Promise<Post[]>;
-  findAll(userId: number): Promise<Post[]>;
-
-  /**
    * Fetch all posts, including the author, metaOptions, and tags
    * Also Fetches all posts for A specific user
    * */
-  public async findAll(userId?: number) {
-    let posts: Post[] = [];
-
-    /**
-     * Fetch posts for a particular user
-     * */
-    if (userId) {
-      // Check if a user exists in the database
-      const user = await this.userService.findOneById(userId);
-
-      if (!user)
-        throw new NotFoundException(`User with id ${userId} not found`);
-
-      try {
-        posts = await this.postRepository.find({
-          where: {
-            author: user,
-          },
-        });
-      } catch (error) {
-        throw new BadRequestException(
-          'Error fetching posts, please try again',
-          String(error),
-        );
-      }
-
-      return posts;
-    }
-
+  public async findAll(postQuery: GetPostsDto): Promise<Paginated<Post>> {
+    let posts: Paginated<Post> | null;
     /**
      * Fetching all posts
      * */
     try {
-      posts = await this.postRepository.find({
-        relations: {
-          metaOptions: true,
-          tags: true,
-          author: true,
+      posts = await this.paginationProvider.paginateQuery(
+        {
+          limit: postQuery.limit,
+          page: postQuery.page,
         },
-      });
+        this.postRepository,
+      );
     } catch (err) {
       throw new BadRequestException(
         'Error fetching posts, please try again',
@@ -145,9 +119,16 @@ export class PostsService {
    * @param id - The id of the post
    * */
   async findOneById(id: number) {
-    const post = await this.postRepository.findOneBy({ id });
+    let post: Post | null;
 
-    if (!post) throw new NotFoundException(`Post with id ${id} not found`);
+    try {
+      post = await this.postRepository.findOneBy({ id });
+    } catch (error) {
+      throw new BadRequestException(
+        'Error fetching post, please try again',
+        String(error),
+      );
+    }
 
     return post;
   }
@@ -184,9 +165,10 @@ export class PostsService {
         post.tags = tags;
       }
     } catch (err) {
-      throw new BadRequestException('Error fetching post, please try again', {
-        description: 'Connection to the database failed',
-      });
+      throw new BadRequestException(
+        'Error fetching post, please try again',
+        String(err),
+      );
     }
 
     //update the properties

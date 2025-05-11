@@ -1,4 +1,16 @@
 ###################################
+### Authentication Requests
+###################################
+### Sign In Request
+POST http://localhost:3000/auth/sign-in
+Content-Type: application/json
+
+{
+  "email": "katabi@gmail.com",
+  "password": "gLORIAAVIOS#_2"
+}
+
+###################################
 ### User Requests
 ###################################
 ###
@@ -15,7 +27,7 @@ Content-Type: application/json
   "firstName": "Samuel",
   "lastName": "Katabi",
   "email": "katabi@gmail.com",
-  "password": "gLORRIAVIOS#_2"
+  "password": "gLORIAAVIOS#_2"
 }
 
 ###

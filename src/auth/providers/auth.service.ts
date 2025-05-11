@@ -1,23 +1,19 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { UsersService } from '../../users/providers/users.service';
+import { SignInDto } from '../dtos/signin.dto';
+import { HashingProvider } from './hashing.provider';
+import { SignInProvider } from './sign-in.provider';
 
 @Injectable()
 export class AuthService {
   constructor(
     @Inject(forwardRef(() => UsersService))
     private readonly userService: UsersService,
+    private readonly hashingProvider: HashingProvider,
+    private readonly signInProvider: SignInProvider,
   ) {}
 
-  public login(email: string, password: string, id: number) {
-    //check if a user exists in the database
-    const user = this.userService.findOneById(id);
-    //verify the user
-    console.log(user);
-    return this.isAuthenticated();
-    //generates a token
-  }
-
-  private isAuthenticated(): boolean {
-    return true;
+  public async signIn(signInDto: SignInDto): Promise<boolean> {
+    return await this.signInProvider.signIn(signInDto);
   }
 }

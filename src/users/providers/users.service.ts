@@ -1,11 +1,4 @@
-import {
-  BadRequestException,
-  forwardRef,
-  Inject,
-  Injectable,
-  NotFoundException,
-  RequestTimeoutException,
-} from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { AuthService } from '../../auth/providers/auth.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../user.entity';
@@ -16,6 +9,7 @@ import profileConfig from '../config/profile.config';
 import { UsersCreateManyProvider } from './users-create-many.provider';
 import { CreateManyUsersDto } from '../dtos/create-many-users.dto';
 import { CreateUserProvider } from './create-user.provider';
+import { FindUserByEmailProvider } from './find-user-by-email-provider.service';
 
 /**
  * Class to connect to users table and conduction user-based operations
@@ -29,6 +23,7 @@ export class UsersService {
    * @param profileConfiguration
    * @param usersCreateManyProvider
    * @param createUserProvider
+   * @param usersFindOneUserByEmailProvider
    */
   constructor(
     // If unsuccessful rollback
@@ -41,6 +36,7 @@ export class UsersService {
     private readonly profileConfiguration: ConfigType<typeof profileConfig>,
     private readonly usersCreateManyProvider: UsersCreateManyProvider,
     private readonly createUserProvider: CreateUserProvider,
+    private readonly usersFindOneUserByEmailProvider: FindUserByEmailProvider,
   ) {}
 
   /**
@@ -63,31 +59,20 @@ export class UsersService {
 
   /**
    * Method to find user by id
-   * @param id - user id
    * @returns user object
+   * @param email
    */
-  public async findOneById(id: number) {
-    if (!id) throw new BadRequestException('id is required to find a user');
-
-    let user: User | null;
-
-    try {
-      user = await this.userRepository.findOneBy({ id });
-    } catch (err) {
-      throw new RequestTimeoutException(
-        'Unable to process the request at the moment, please try again later',
-        {
-          description: 'Error connecting to the database',
-        },
-      );
-    }
-
-    if (!user) throw new NotFoundException('User not found');
-
-    return user;
+  public async findOneByEmail(email: string) {
+    return await this.usersFindOneUserByEmailProvider.findOneByEmail(email);
   }
 
   public async createMany(createUsersDto: CreateManyUsersDto) {
     return await this.usersCreateManyProvider.createMany(createUsersDto);
+  }
+
+  async findOneById(id: number) {
+    return this.userRepository.findOneBy({
+      id: id,
+    });
   }
 }

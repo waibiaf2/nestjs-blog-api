@@ -14,8 +14,13 @@ import { HashingProvider } from '../../auth/providers/hashing.provider';
 @Injectable()
 export class CreateUserProvider {
   constructor(
+    /**
+     * Inject User Repository*/
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    /**
+     * Inject HashingProvider
+     * */
     @Inject(forwardRef(() => HashingProvider))
     private readonly hashingProvider: HashingProvider,
   ) {}
@@ -28,12 +33,9 @@ export class CreateUserProvider {
         where: { email: createUserDto.email },
       }); // If unsuccessful rollback
     } catch (err) {
-      console.log(err);
       throw new RequestTimeoutException(
         'Unable to process the request at the moment, please try again later',
-        {
-          description: 'Error connecting to the database',
-        },
+        String(err),
       );
     }
 
@@ -57,6 +59,7 @@ export class CreateUserProvider {
         String(err),
       );
     }
+
     return newUser;
   }
 }

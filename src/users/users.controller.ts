@@ -50,11 +50,11 @@ export class UsersController {
     return this.userService.findAll(limit, page);
   }
 
-  @Get(':id')
+  /*@Get(':id')
   public getUserWithOptionalParam(@Param('id', ParseIntPipe) id: number) {
     return this.userService.findOneById(id);
   }
-
+*/
   @Post()
   public createUser(@Body() createUserDto: CreateUserDto) {
     return this.userService.createUser(createUserDto);

@@ -9,6 +9,6 @@ export class AuthController {
   @Post('sign-in')
   @HttpCode(HttpStatus.OK)
   public async signIn(@Body() signInDto: SignInDto) {
-    return this.authService.signIn(signInDto);
+    return await this.authService.signIn(signInDto);
   }
 }

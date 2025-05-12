@@ -23,6 +23,7 @@ const ENV = process.env.NODE_ENV;
     AuthModule,
     TagsModule,
     MetaOptionsModule,
+    PaginationModule,
     ConfigModule.forRoot(
       /*Load environment variables from .env file*/
       {
@@ -47,7 +48,6 @@ const ENV = process.env.NODE_ENV;
         database: configService.get('database.name'),
       }),
     }),
-    PaginationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

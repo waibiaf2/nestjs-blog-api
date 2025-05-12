@@ -48,7 +48,7 @@ export class SignInProvider {
       );
     } catch (err) {
       throw new RequestTimeoutException(err, {
-        description: 'Could not compare passwors',
+        description: 'Could not compare password',
       });
     }
 
@@ -69,8 +69,10 @@ export class SignInProvider {
       },
     );
 
+    console.log(accessToken);
+
     return {
-      accessToken,
+      accessToken: accessToken,
     };
   }
 }

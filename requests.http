@@ -15,6 +15,8 @@ Content-Type: application/json
 ###################################
 ###
 GET localhost:3000/users
+Authorization: Bearer {{accessToken}}
+
 
 ###
 GET localhost:3000/users/1
@@ -33,6 +35,7 @@ Content-Type: application/json
 ###
 POST localhost:3000/users/create-many
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 {
   "users": [

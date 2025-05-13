@@ -11,12 +11,22 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UsersService } from '../../users/providers/users.service';
 import { ActiveUserData } from '../../auth/ interfaces/active-user-data.interface';
 import { Tag } from 'src/tags/tag.entity';
+import { User } from 'src/users/user.entity';
 
 @Injectable()
 export class CreatePostProvider {
   constructor(
+    /**
+     * Injecting Tags Service
+     * */
     private readonly tagsService: TagsService,
+    /**
+     * Injecting user service
+     * */
     private readonly userService: UsersService,
+    /**
+     * Injecting post repository
+     * */
     @InjectRepository(Post)
     private readonly postRepository: Repository<Post>,
   ) {}
@@ -27,7 +37,7 @@ export class CreatePostProvider {
    * @param user
    * */
   async createPost(createPostDto: CreatePostDto, user: ActiveUserData) {
-    let author;
+    let author: User | null;
     let tags: Tag[];
 
     try {
@@ -42,8 +52,6 @@ export class CreatePostProvider {
         description: 'User or Tags could not be fetched...',
       });
     }
-
-    console.log(tags);
 
     if ((createPostDto.tags ?? []).length != tags.length) {
       throw new BadRequestException('Please check your tag ids');

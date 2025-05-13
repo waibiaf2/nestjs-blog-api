@@ -26,16 +26,16 @@ POST localhost:3000/users
 Content-Type: application/json
 
 {
-  "firstName": "Samuel",
-  "lastName": "Katabi",
-  "email": "katabi@gmail.com",
+  "firstName": "Robert",
+  "lastName": "Kisambira",
+  "email": "kasambira@gmail.com",
   "password": "gLORIAAVIOS#_2"
 }
 
 ###
 POST localhost:3000/users/create-many
 Content-Type: application/json
-Authorization: Bearer {{accessToken}}
+//Authorization: Bearer {{accessToken}}
 
 {
   "users": [

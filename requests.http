@@ -6,7 +6,7 @@ POST http://localhost:3000/auth/sign-in
 Content-Type: application/json
 
 {
-  "email": "katabi@gmail.com",
+  "email": "kasambira@gmail.com",
   "password": "gLORIAAVIOS#_2"
 }
 
@@ -24,11 +24,12 @@ GET localhost:3000/users/1
 ###
 POST localhost:3000/users
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 {
   "firstName": "Robert",
   "lastName": "Kisambira",
-  "email": "kasambira@gmail.com",
+  "email": "kasambira+2@gmail.com",
   "password": "gLORIAAVIOS#_2"
 }
 

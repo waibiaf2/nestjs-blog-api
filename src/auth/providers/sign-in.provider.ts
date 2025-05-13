@@ -49,7 +49,7 @@ export class SignInProvider {
       );
     } catch (err) {
       throw new RequestTimeoutException(err, {
-        description: 'Could not compare password',
+        description: 'Invalid user password, please try again.',
       });
     }
 

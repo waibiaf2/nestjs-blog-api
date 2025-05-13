@@ -6,8 +6,8 @@ POST http://localhost:3000/auth/sign-in
 Content-Type: application/json
 
 {
-  "email": "kasambira@gmail.com",
-  "password": "gLORIAAVIOS#_2"
+  "email": "franklin@gmail.com",
+  "password": "gLORRIAVIOS#_2"
 }
 
 ###################################
@@ -36,7 +36,7 @@ Authorization: Bearer {{accessToken}}
 ###
 POST localhost:3000/users/create-many
 Content-Type: application/json
-//Authorization: Bearer {{accessToken}}
+Authorization: Bearer {{accessToken}}
 
 {
   "users": [
@@ -76,7 +76,9 @@ GET http://localhost:3000/posts?limit=2&page=2
 GET http://localhost:3000/posts/users/4?limit=2&page=1
 
 ### Get A Post
-GET http://localhost:3000/posts/5
+GET http://localhost:3000/posts/16
+Authorization: Bearer {{accessToken}}
+
 
 ### Create A Post
 POST localhost:3000/posts
@@ -87,16 +89,14 @@ Authorization: Bearer {{accessToken}}
   "title": "Common Array methods in Javascript",
   "postType": "series",
   "content": "Enim rationale sit dignissim!Pturient duis tristique, exercitation officia? Donec excepteur, exercitationem vulputate facilis dicta, nisl fuga arcu tempor ante quos egestas maiores magni harum! Nam corrupti! Ridiculus architecto voluptatibus dictumst etiam ligula, augue fusce eligendi maiores perspiciatis dictum! Nulla posuere, anim massa saepe odit? Litora risus dictum.",
-  "slug": "common-array-methods-in-javascript-7806",
+  "slug": "common-array-methods-in-javascript1199",
   "status": "draft",
   "schema": "{\"version\":1,\"blocks\":[{\"type\":\"header\",\"data\":{\"text\":\"Article Header\",\"level\":1}},{\"type\":\"paragraph\",\"data\":{\"text\":\"Article content paragraph\"}}]}",
   "featuredImageUrl": "https://google.com/images/testimage.png",
-  "publishedOn": "2023-10-01T00:00:00.000Z",
-  "tags": [2,5],
+  "tags": [7,9],
   "metaOptions": {
     "metaValue": "{\"sidebarEnabled\": true, \"footerActive\": true}"
-  },
-  "authorId": 4
+  }
 }
 
 ### Update A Post

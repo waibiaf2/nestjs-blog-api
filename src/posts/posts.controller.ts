@@ -7,13 +7,14 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Query,
+  Query, Req,
 } from '@nestjs/common';
 import { PostsService } from './providers/posts.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreatePostDto } from './dtos/create-post.dto';
 import { PatchPostDto } from './dtos/patch-posts.dto';
 import { GetPostsDto } from './dtos/get-posts.dto';
+import { REQUEST_USER_KEY } from '../auth/constants/auth.constants';
 
 @Controller('posts')
 @ApiTags('Posts')
@@ -29,8 +30,9 @@ export class PostsController {
     description: 'You get a 201 response is your post is create successfully.',
   })
   @Post()
-  public createPost(@Body() createPostDto: CreatePostDto) {
-    return this.postsService.create(createPostDto);
+  public createPost(@Req() request /*@Body() createPostDto: CreatePostDto*/) {
+    console.log(request[REQUEST_USER_KEY]);
+    /*return this.postsService.create(createPostDto);*/
   }
 
   @ApiOperation({

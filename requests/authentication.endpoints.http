@@ -1,0 +1,23 @@
+###################################
+### Authentication Requests
+###################################
+
+### Sign In Request
+POST http://localhost:3000/auth/sign-in
+Content-Type: application/json
+
+{
+  "email": "franklin@gmail.com",
+  "password": "gLORRIAVIOS#_2"
+}
+
+
+###
+#### Refresh token Request
+POST http://localhost:3000/auth/refresh-tokens
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjM2LCJlbWFpbCI6ImZyYW5rbGluQGdtYWlsLmNvbSIsImlhdCI6MTc0ODM3NDI4NCwiZXhwIjoxNzQ4Mzc3ODg0LCJhdWQiOiJsb2NhbGhvc3Q6MzAwMCIsImlzcyI6ImxvY2FsaG9zdDozMDAwIn0.RsIVCEdr5UPav1cJ7OdGuxcCfEztjaR_2YRaMhZ9DqQ
+
+{
+  "freshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjM2LCJpYXQiOjE3NDgzNjA5ODgsImV4cCI6MTc0ODQ0NzM4OCwiYXVkIjoibG9jYWxob3N0OjMwMDAiLCJpc3MiOiJsb2NhbGhvc3Q6MzAwMCJ9.VUe0UmTuDH1pvsL6UgyG_XNQsvXWIuCMjNrLynI_3qA"
+}

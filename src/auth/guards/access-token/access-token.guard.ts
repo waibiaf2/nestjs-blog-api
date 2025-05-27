@@ -27,7 +27,8 @@ export class AccessTokenGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     // Extract the request from the context
-    const request = context.switchToHttp().getRequest();
+    const request: Request = context.switchToHttp().getRequest();
+
     // Extract the token from the header
     const token = this.extractJwtFromHeader(request) ?? '';
 
@@ -37,6 +38,7 @@ export class AccessTokenGuard implements CanActivate {
         token,
         this.jwtConfiguration,
       );
+      console.log('Payload', payload);
       request[REQUEST_USER_KEY] = payload;
     } catch {
       throw new UnauthorizedException();
@@ -46,7 +48,7 @@ export class AccessTokenGuard implements CanActivate {
   }
 
   private extractJwtFromHeader(request: Request): string | undefined {
-    const [_, token] = request.headers.authorization?.split(' ') ?? [];
+    const [, token] = request.headers.authorization?.split(' ') ?? [];
     return token;
   }
 }

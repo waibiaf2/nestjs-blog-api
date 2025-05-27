@@ -1,0 +1,54 @@
+###################################
+### User Requests
+###################################
+###
+GET localhost:3000/users
+Authorization: Bearer {{accessToken}}
+
+
+###
+GET localhost:3000/users/1
+
+###
+POST localhost:3000/users
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "firstName": "Robert",
+  "lastName": "Kisambira",
+  "email": "kasambira+2@gmail.com",
+  "password": "gLORIAAVIOS#_2"
+}
+
+###
+POST localhost:3000/users/create-many
+Content-Type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+  "users": [
+    {
+      "firstName": "Franklin",
+      "lastName": "Waibi",
+      "email": "franklin@gmail.com",
+      "password": "gLORRIAVIOS#_2"
+    },
+    {
+      "firstName": "Francesca",
+      "lastName": "Waibi",
+      "email": "francesca@gmail.com",
+      "password": "gLORRIAVIOS#_2"
+    }
+  ]
+}
+
+###
+PATCH localhost:3000/users
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "johndoe@email.com"
+}

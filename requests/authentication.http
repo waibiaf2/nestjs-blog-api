@@ -1,0 +1,11 @@
+###################################
+### Authentication Requests
+###################################
+### Sign In Request
+POST http://localhost:3000/auth/sign-in
+Content-Type: application/json
+
+{
+  "email": "franklin@gmail.com",
+  "password": "gLORRIAVIOS#_2"
+}

@@ -1,0 +1,21 @@
+####################################
+### Tags Requests
+####################################
+POST http://localhost:3000/tags
+Content-Type: application/json
+
+{
+  "name": "Backend Development",
+  "slug": "backend-development",
+  "description": "All posts javascript",
+  "featuredImageUrl": "https://google.com/imaages/myFirstTag.png"
+}
+
+### Fetch all Tags
+GET http://localhost:3000/tags
+
+### Delete A Tag
+DELETE http://localhost:3000/tags/8
+
+### Delete A Tag
+DELETE http://localhost:3000/tags/6/soft-delete

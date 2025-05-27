@@ -8,7 +8,6 @@ import { SignInProvider } from './providers/sign-in.provider';
 import { ConfigModule } from '@nestjs/config';
 import JwtConfig from './config/jwt.config';
 import { JwtModule } from '@nestjs/jwt';
-import jwtValidations from './config/jwt.validations';
 
 const ENV = process.env.NODE_ENV || 'production';
 

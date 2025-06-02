@@ -15,9 +15,9 @@ Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 
 {
-  "firstName": "Robert",
-  "lastName": "Kisambira",
-  "email": "kasambira+2@gmail.com",
+  "firstName": "Andrew",
+  "lastName": "waibi",
+  "email": "waibi+2@gmail.com",
   "password": "gLORIAAVIOS#_2"
 }
 

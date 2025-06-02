@@ -1,5 +1,6 @@
 import {
   Injectable,
+  NotFoundException,
   RequestTimeoutException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -21,16 +22,11 @@ export class FindUserByEmailProvider {
       user = await this.userRepository.findOneBy({ email: email });
     } catch (err) {
       throw new RequestTimeoutException(err, {
-        description: 'Could not fetch user...',
+        description:
+          'Could not fetch user..., probably a user the provided credentials does not exist',
       });
     }
 
-    if (!user) {
-      throw new UnauthorizedException(
-        'Access denied! User is not authenticated.',
-      );
-    }
-
-    return user;
+    return user as User;
   }
 }

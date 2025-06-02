@@ -13,6 +13,8 @@ import { TagsService } from '../../tags/providers/tags.service';
 import { GetPostsDto } from '../dtos/get-posts.dto';
 import { PaginationProvider } from '../../common/pagination/providers/pagination.provider';
 import { Paginated } from '../../common/pagination/interfaces/paginated.inteface';
+import { CreatePostProvider } from './create-post.provider';
+import { ActiveUserData } from '../../auth/ interfaces/active-user-data.interface';
 
 /**
  * PostsService class
@@ -29,6 +31,7 @@ export class PostsService {
    * @param tagsService
    * @param postRepository
    * @param paginationProvider
+   * @param createPostProvider
    **/
   constructor(
     private readonly tagsService: TagsService,
@@ -38,46 +41,16 @@ export class PostsService {
     /**
      * Injecting pagionation provider*/
     private readonly paginationProvider: PaginationProvider<Post>,
+    private readonly createPostProvider: CreatePostProvider,
   ) {}
 
   /**
    * Create a new post
    * @Param createPostDto - The data to create a new post
+   * @param user
    * */
-  async create(createPostDto: CreatePostDto) {
-    // Check if a user exists in the database
-    const author = await this.userService.findOneById(createPostDto.authorId);
-
-    const tags = await this.tagsService.findMultipleTags(
-      createPostDto.tags ?? [],
-    );
-
-    console.log(tags);
-
-    if (!author) {
-      throw new NotFoundException(
-        `User with id ${createPostDto.authorId} not found`,
-      );
-    }
-
-    //Create Post
-    let post = this.postRepository.create({
-      ...createPostDto,
-      tags: tags,
-      author: author,
-    } as Partial<Post>);
-
-    try {
-      post = await this.postRepository.save(post);
-    } catch (err) {
-      throw new BadRequestException(
-        'Error creating post, please try again',
-        String(err),
-      );
-    }
-
-    //Return post
-    return post;
+  async create(createPostDto: CreatePostDto, user: ActiveUserData) {
+    return this.createPostProvider.createPost(createPostDto, user);
   }
 
   /**

@@ -49,7 +49,11 @@ export class UsersService {
    * @returns array of users
    */
   public async findAll(limit: number, page: number) {
-    return await this.userRepository.find();
+    const users = await this.userRepository.find();
+    return users.map((user) => {
+      const { password, ...userData } = user;
+      return userData;
+    });
   }
 
   /**

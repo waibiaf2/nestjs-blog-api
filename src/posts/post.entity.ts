@@ -87,6 +87,8 @@ export class Post {
   })
   metaOptions?: CreateMetaOptionsDto | MetaOption | undefined;
 
-  @ManyToOne(() => User, (author) => author.posts)
+  @ManyToOne(() => User, (author) => author.posts, {
+    eager: true,
+  })
   author: User;
 }

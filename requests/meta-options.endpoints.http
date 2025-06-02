@@ -1,0 +1,14 @@
+
+#########################################
+### Meta Options Requests
+########################################
+GET http://localhost:3000/meta-options
+
+
+###
+POST http://localhost:3000/meta-options
+Content-Type: application/json
+
+{
+  "metaValue": "{\"sidebarEnabled\": true, \"footerActive\": true}"
+}

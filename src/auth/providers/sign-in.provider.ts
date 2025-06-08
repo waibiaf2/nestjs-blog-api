@@ -28,7 +28,7 @@ export class SignInProvider {
     // Compare password to the hash
     const isPasswordValid = await this.hashingProvider.comparePassword(
       signInDto.password,
-      user.password,
+      user.password ?? '',
     );
 
     if (!isPasswordValid) throw new UnauthorizedException('Invalid password');

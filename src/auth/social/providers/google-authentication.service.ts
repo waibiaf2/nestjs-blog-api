@@ -5,6 +5,7 @@ import JwtConfig from '../../config/jwt.config';
 import { GoogleTokenDto } from '../dtos/google-token.dto';
 import { UsersService } from '../../../users/providers/users.service';
 import { GenerateTokensProvider } from 'src/auth/providers/generate-tokens.provider';
+import { GoogleUserInterface } from '../../../users/interfaces/google-user-interface';
 
 @Injectable()
 export class GoogleAuthenticationService implements OnModuleInit {
@@ -30,6 +31,7 @@ export class GoogleAuthenticationService implements OnModuleInit {
     const logInTicket = await this.oauthClient.verifyIdToken({
       idToken: googleTokenDto.token,
     });
+    console.log(logInTicket);
 
     const payload = logInTicket.getPayload();
     if (!payload) {
@@ -37,16 +39,27 @@ export class GoogleAuthenticationService implements OnModuleInit {
     }
 
     // Extract payload from the Google token
-    const { email, sub: googleId } = payload;
+    const {
+      email,
+      sub: googleId,
+      given_name: firstName,
+      family_name: lastName,
+    } = payload;
 
     // Find the user in the database using GoogleId
     const user = await this.userService.findOneByGoogleId(googleId);
 
     // If the Google id exists generate tokens
-    if (user) {
-      return this.generateTokensProvider.generateTokens(user);
-    }
+    if (user) return this.generateTokensProvider.generateTokens(user);
 
-    // Otherwise create a new user in the database and generate tokens
+    // Otherwise, create a new user in the database and generate tokens
+    const newUser = await this.userService.createGoogleUser({
+      email,
+      googleId,
+      firstName,
+      lastName,
+    } as GoogleUserInterface);
+
+    return newUser;
   }
 }

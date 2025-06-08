@@ -60,6 +60,6 @@ export class GoogleAuthenticationService implements OnModuleInit {
       lastName,
     } as GoogleUserInterface);
 
-    return newUser;
+    return this.generateTokensProvider.generateTokens(newUser);
   }
 }

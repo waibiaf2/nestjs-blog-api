@@ -3,13 +3,16 @@
 ####################################
 POST http://localhost:3000/tags
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 {
-  "name": "Backend Development",
-  "slug": "backend-development",
+  "name": "javascript arrays",
+  "slug": "javascript-arrays",
   "description": "All posts javascript",
   "featuredImageUrl": "https://google.com/imaages/myFirstTag.png"
 }
+
+
 
 ### Fetch all Tags
 GET http://localhost:3000/tags

@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   forwardRef,
   Inject,
   Injectable,
@@ -8,6 +9,7 @@ import { SignInDto } from '../dtos/signin.dto';
 import { UsersService } from '../../users/providers/users.service';
 import { HashingProvider } from './hashing.provider';
 import { GenerateTokensProvider } from './generate-tokens.provider';
+import { User } from '../../users/user.entity';
 
 @Injectable()
 export class SignInProvider {
@@ -30,7 +32,6 @@ export class SignInProvider {
       signInDto.password,
       user.password ?? '',
     );
-
     if (!isPasswordValid) throw new UnauthorizedException('Invalid password');
 
     return await this.generateTokenProvider.generateTokens(user);

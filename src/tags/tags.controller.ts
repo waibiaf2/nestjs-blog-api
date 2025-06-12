@@ -10,6 +10,8 @@ import {
 import { TagsService } from './providers/tags.service';
 import { CreateTagDto } from './dtos/create-tag.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { Auth } from '../auth/decorator/auth.decorator';
+import { AuthType } from '../auth/enums/auth-type.enums';
 
 @Controller('tags')
 export class TagsController {
@@ -29,6 +31,7 @@ export class TagsController {
     description: 'Tag created successfully',
   })
   @Post()
+  @Auth(AuthType.Bearer)
   public create(@Body() createTagDto: CreateTagDto) {
     return this.tagsService.create(createTagDto);
   }
@@ -42,6 +45,7 @@ export class TagsController {
     description: 'Returns a list of tags',
   })
   @Get()
+  @Auth(AuthType.None)
   public findAll() {
     return this.tagsService.findAll();
   }

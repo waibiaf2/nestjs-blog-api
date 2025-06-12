@@ -44,9 +44,7 @@ export class UsersService {
   /**
    * */
   public async createUser(createUserDto: CreateUserDto) {
-    const createdUser = await this.createUserProvider.create(createUserDto);
-    const { password, ...user } = createdUser;
-    return user;
+    return await this.createUserProvider.create(createUserDto);
   }
 
   /**
@@ -58,8 +56,7 @@ export class UsersService {
   public async findAll(limit: number, page: number) {
     const users = await this.userRepository.find();
     return users.map((user) => {
-      const { password, ...userData } = user;
-      return userData;
+      return user;
     });
   }
 

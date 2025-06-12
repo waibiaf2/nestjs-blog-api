@@ -20,13 +20,15 @@ export class FindUserByEmailProvider {
 
     try {
       user = await this.userRepository.findOneBy({ email: email });
+      if (!user)
+        throw new NotFoundException('User not found with the provided email');
     } catch (err) {
       throw new RequestTimeoutException(err, {
         description:
-          'Could not fetch user..., probably a user the provided credentials does not exist',
+          'Could not fetch user..., the provided credentials do not exist',
       });
     }
 
-    return user as User;
+    return user;
   }
 }

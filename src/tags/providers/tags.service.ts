@@ -19,8 +19,7 @@ export class TagsService {
     try {
       tag = await this.tagRepository.save(tag);
     } catch (exception) {
-      console.log(exception);
-      throw new BadRequestException('Error could not connect to the database');
+      throw new BadRequestException(exception.detail);
     }
     return tag;
   }

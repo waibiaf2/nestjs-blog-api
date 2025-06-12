@@ -1,28 +1,30 @@
 import { forwardRef, Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { OAuth2Client } from 'google-auth-library';
-import { ConfigType } from '@nestjs/config';
-import JwtConfig from '../../config/jwt.config';
+import { ConfigService, ConfigType } from '@nestjs/config';
 import { GoogleTokenDto } from '../dtos/google-token.dto';
 import { UsersService } from '../../../users/providers/users.service';
 import { GenerateTokensProvider } from 'src/auth/providers/generate-tokens.provider';
 import { GoogleUserInterface } from '../../../users/interfaces/google-user-interface';
+import JwtConfig from '../../config/jwt.config';
 
 @Injectable()
 export class GoogleAuthenticationService implements OnModuleInit {
   private oauthClient: OAuth2Client;
 
   constructor(
-    @Inject(JwtConfig.KEY)
-    private readonly jwtConfiguration: ConfigType<typeof JwtConfig>,
+    /*@Inject(JwtConfig.KEY)
+    private readonly jwtConfiguration: ConfigType<typeof JwtConfig>,*/
+    private readonly configService: ConfigService,
     @Inject(forwardRef(() => UsersService))
     private readonly userService: UsersService,
     private readonly generateTokensProvider: GenerateTokensProvider,
   ) {}
 
   onModuleInit() {
-    const clientId = this.jwtConfiguration.googleClientId;
-    const clientSecret = this.jwtConfiguration.googleClientSecret;
-
+    /*const clientId = this.jwtConfiguration.googleClientId;
+    const clientSecret = this.jwtConfiguration.googleClientSecret;*/
+    const clientId = this.configService.get('JwtConfig.googleClientId');
+    const clientSecret = this.configService.get('JwtConfig.googleClientSecret');
     this.oauthClient = new OAuth2Client(clientId, clientSecret);
   }
 

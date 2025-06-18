@@ -1,12 +1,17 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Post } from '../posts/post.entity';
 import { Exclude } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @ApiProperty({
+    name: 'First Name',
+    example: 'Waibi Andrew Franklin',
+  })
   @Column({
     type: 'varchar',
     length: 96,

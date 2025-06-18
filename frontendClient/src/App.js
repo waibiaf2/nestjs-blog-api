@@ -21,7 +21,9 @@ function App() {
               }),
             })
               .then((response) => console.log(response))
-              .then((data) => console.log(data));
+              .then((data) =>
+                console.log('This is data logged from google backend', data),
+              );
           }}
         />
       </GoogleOAuthProvider>

@@ -1,11 +1,10 @@
 import { forwardRef, Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { OAuth2Client } from 'google-auth-library';
-import { ConfigService, ConfigType } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { GoogleTokenDto } from '../dtos/google-token.dto';
 import { UsersService } from '../../../users/providers/users.service';
 import { GenerateTokensProvider } from 'src/auth/providers/generate-tokens.provider';
 import { GoogleUserInterface } from '../../../users/interfaces/google-user-interface';
-import JwtConfig from '../../config/jwt.config';
 
 @Injectable()
 export class GoogleAuthenticationService implements OnModuleInit {
@@ -33,7 +32,7 @@ export class GoogleAuthenticationService implements OnModuleInit {
     const logInTicket = await this.oauthClient.verifyIdToken({
       idToken: googleTokenDto.token,
     });
-    console.log(logInTicket);
+    console.log(logInTicket.getPayload());
 
     const payload = logInTicket.getPayload();
     if (!payload) {

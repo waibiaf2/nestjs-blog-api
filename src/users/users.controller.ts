@@ -57,7 +57,7 @@ export class UsersController {
   public getUserWithOptionalParam(@Param('id', ParseIntPipe) id: number) {
     return this.userService.findOneById(id);
   }
-*/
+  */
   @Post()
   @Auth(AuthType.None)
   @UseInterceptors(ClassSerializerInterceptor)

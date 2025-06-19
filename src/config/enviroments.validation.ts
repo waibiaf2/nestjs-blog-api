@@ -20,4 +20,10 @@ export default Joi.object({
   JWT_REFRESH_TOKEN_TTL: Joi.number().required(),
 
   API_VERSION: Joi.string().default('v1'),
+
+  AWS_PUBLIC_BUCKET_NAME: Joi.string().required(),
+  AWS_REGION: Joi.string().required(),
+  AWS_CLOUDFRONT_URL: Joi.string().required(),
+  AWS_ACCESS_KEY_ID: Joi.string().required(),
+  AWS_ACCESS_SECRET_KEY: Joi.string().required(),
 });
